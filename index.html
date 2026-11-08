@@ -125,6 +125,7 @@
   section.in-room > .row:not(.room){display:none}
   section.in-room > .room{display:flex}
   .crumb{color:#a7f070}
+  .room.secret > .block:not(.back){border-color:#ffe08a}
   .stage-num.sub{color:#a7f070}
   .stage-num.flash{animation:flash .5s steps(2) 2}
   @keyframes flash{50%{color:#fff}}
@@ -163,7 +164,12 @@
     line-height:1.8;color:var(--ink);background:#5d275d;border:var(--px) solid #3e2731;padding:8px 12px;text-align:center}
   .thanks{position:absolute;left:112vw;width:100vw;bottom:84px;height:470px;display:flex;flex-direction:column;
     align-items:center;justify-content:center;text-align:center;gap:16px;padding:0 var(--side)}
+  .thanks{justify-content:flex-start !important;padding-top:40px !important}
   .thanks h2{margin:0 auto;font-size:28px;color:var(--gold)}
+  .thanks-row{position:absolute;left:50%;transform:translateX(-50%);bottom:130px;margin:0;gap:48px;align-items:flex-end}
+  .thanks-row > .block{flex:0 0 300px;text-align:left}
+  .thanks-row > .block p{font-size:19px;overflow-wrap:anywhere}
+  .thanks p.hint{font-size:18px;max-width:none;white-space:nowrap}
   .thanks p{color:var(--dim);margin:0;max-width:640px}
   .copy{position:absolute;left:var(--side);bottom:12px;margin:0;color:#e8f4ff;font-size:20px;text-shadow:2px 2px 0 #000}
 
@@ -250,6 +256,31 @@
   .pad button{width:56px;height:56px;font-size:15px;opacity:.85;touch-action:none}
   @media (pointer:coarse){ .pad{display:flex} .help{display:none} }
   body.classic #game, body.classic .pad, body.classic .help, body.classic .coins{display:none}
+
+  /* ================= Classic mode: a tidy, even card layout ================= */
+  body.classic main{padding-top:90px}
+  body.classic section{padding:46px 0 26px}
+  body.classic section + section{border-top:2px dashed rgba(169,191,208,.25)}
+  body.classic .row,
+  body.classic .row.five,
+  body.classic .row.tall{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:22px;
+    align-items:start;margin:0 0 26px}
+  body.classic .row > .block{max-width:none;min-width:0}
+  body.classic .stack{display:contents}
+  body.classic .stack > .upper{position:static}
+  body.classic .block{padding:18px 22px}
+  body.classic .block h3{font-size:11px}
+  body.classic .block .more{font-size:20px;line-height:1.32;color:#d3e1ec;padding-top:10px;margin-top:10px;border-top:2px dashed rgba(169,191,208,.25)}
+  body.classic .block .logo{height:52px}
+  body.classic .room{margin-top:6px}
+  body.classic .room::before{grid-column:1/-1;margin:6px 0 -6px;color:#a7f070}
+  body.classic .room.secret::before{color:#ffe08a}
+  body.classic .string{height:0}
+  body.classic .hero{margin-bottom:10px}
+  body.classic .thanks-row{position:static;transform:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    width:100%;margin-top:18px}
+  body.classic .thanks{gap:12px}
+  body.classic .flag-row{margin-top:4px}
 </style>
 </head>
 <body>
@@ -309,7 +340,7 @@
           I feel truly privileged to have had the opportunity and exposure to learn and live through so many different cultures and parts of the world.
           <br><br>Languages: Spanish (native) · English (fluent) · French (fluent) · Chinese (proficient)</div></div>
       <!-- TODO: put your résumé PDF in the repo (e.g. resume.pdf) and set href="resume.pdf" -->
-      <a class="block link" data-solid href="resume.pdf" target="_blank" rel="noopener"><span class="icon">↗</span><h3>RÉSUMÉ</h3><p>Open PDF</p></a>
+      <a class="block link" data-solid href="resume.pdf" data-download="Lucas_Caldentey_CV.pdf"><span class="icon">⬇</span><h3>RÉSUMÉ</h3><p>Download PDF</p></a>
       <a class="block link" data-solid href="https://www.linkedin.com/in/lucas-caldentey/" target="_blank" rel="noopener"><span class="icon">↗</span><h3>LINKEDIN</h3><p>View profile</p></a>
       <div class="block expand" data-solid data-sprite="battery"><span class="icon">＋</span><h3>BATTERY BUTTON</h3><p>Energy storage · bump me!</p>
         <div class="more">One of my biggest passions is batteries and energy storage technology.
@@ -363,6 +394,15 @@
       <div class="block expand" data-solid style="flex-basis:420px"><span class="icon">＋</span><span class="when">2023</span><h3>SAIFETY: AUDIO PROTECTION &amp; ETHICAL DATA COLLECTION IN TXT2VID</h3><p>Stanford Compression Forum</p>
         <div class="more">Caldentey, L., Altmann, A., Xiao, Y. L., &amp; Geleta, F. (2023). <i>SaiFETY: An Integration of Audio Protection and Ethical Data Collection Comparisons Within Txt2Vid.</i> Stanford Compression Forum, STEM to SHTEM Program.</div></div>
     </div>
+    <div class="row room secret" id="room-camino" data-title="★ SECRET · EL CAMINO DE SANTIAGO" data-stage="3-★" data-enter="left">
+      <div class="block back nocoin" data-solid data-back><span class="icon">←</span><h3>BACK</h3></div>
+      <div class="block expand" data-solid style="flex-basis:360px"><span class="icon">＋</span><h3>EL CAMINO DE SANTIAGO</h3><p>A pilgrimage I've walked twice</p>
+        <div class="more">The Camino de Santiago is a centuries-old network of pilgrimage routes that end at the cathedral of Santiago de Compostela, in Galicia, Spain. I have completed it twice, and both times were among the most profound and impactful experiences of my life. [Add what it meant to you, in your own words.]</div></div>
+      <div class="block expand" data-solid><span class="icon">＋</span><span class="when">[YEAR]</span><h3>FIRST CAMINO</h3><p>[Route · distance]</p>
+        <div class="more">[Where you started, how long it took, and a moment that stayed with you.]</div></div>
+      <div class="block expand" data-solid><span class="icon">＋</span><span class="when">[YEAR]</span><h3>SECOND CAMINO</h3><p>[Route · distance]</p>
+        <div class="more">[What was different the second time.]</div></div>
+    </div>
     <div class="string" data-chord="Fmaj9" data-note="The IV chord: warm and spacious. In a progression the IV is where things start to lift and move forward, like building real-world experience."></div>
   </section>
 
@@ -408,6 +448,15 @@
       <div class="block track" data-solid data-src="audio/song-3.mp3"><span class="icon">♪</span><h3>[SONG TITLE]</h3><p>[year · genre]</p><div class="prog"><i></i></div></div>
       <a class="block link" data-solid href="#" target="_blank" rel="noopener"><span class="icon">↗</span><h3>MORE MUSIC</h3><p>[SoundCloud / Spotify]</p></a>
     </div>
+    <div class="row room secret" id="room-poetry" data-title="★ SECRET · POETRY" data-stage="5-★">
+      <div class="block back nocoin" data-solid data-back><span class="icon">←</span><h3>BACK</h3></div>
+      <div class="block expand" data-solid><span class="icon">＋</span><h3>WHY POETRY</h3><p>[One line]</p>
+        <div class="more">[Why poetry matters to you and when you started writing or reading it.]</div></div>
+      <div class="block expand" data-solid><span class="icon">＋</span><h3>POETS I LOVE</h3><p>[A few names]</p>
+        <div class="more">[The poets or poems that shaped you, and why.]</div></div>
+      <div class="block expand" data-solid><span class="icon">＋</span><h3>A POEM OF MINE</h3><p>[Title]</p>
+        <div class="more">[One of your own poems.]</div></div>
+    </div>
     <div class="string" data-chord="Cadd9" data-note="Home again (I), voiced low and wide. The I–vi–IV–V–I loop resolves here, right as you land by the house."></div>
   </section>
 </main>
@@ -421,8 +470,12 @@
   <div class="thanks" id="thanks">
     <h2>THANK YOU FOR VISITING!</h2>
     <p><span id="thanksCoins">You made it to the end.</span> Thanks for falling all the way down with me! I'm always happy to talk batteries, energy storage or music.</p>
-    <p><a href="mailto:ldc2146@columbia.edu">ldc2146@columbia.edu</a> · <a href="https://www.linkedin.com/in/lucas-caldentey/" target="_blank" rel="noopener">LinkedIn</a> · <a href="resume.pdf" target="_blank" rel="noopener">Résumé</a></p>
-    <p style="font-size:18px" class="game-only">double-tap ↑ to head back up</p>
+    <p class="game-only hint">bump a box to get in touch · double-tap ↑ to head back up</p>
+    <div class="row thanks-row">
+      <a class="block link nocoin" data-solid href="mailto:ldc2146@columbia.edu"><span class="icon">✉</span><h3>EMAIL</h3><p>ldc2146@columbia.edu</p></a>
+      <a class="block link nocoin" data-solid href="https://www.linkedin.com/in/lucas-caldentey/" target="_blank" rel="noopener"><span class="icon">↗</span><h3>LINKEDIN</h3><p>View profile</p></a>
+      <a class="block link nocoin" data-solid href="resume.pdf" data-download="Lucas_Caldentey_CV.pdf"><span class="icon">⬇</span><h3>CV</h3><p>Download PDF</p></a>
+    </div>
   </div>
   <p class="copy">© Lucas Caldentey</p>
 </div>
@@ -596,16 +649,29 @@
   let modalOpen = false;
   function openLinkModal(el) {
     const title = (el.querySelector('h3') || {}).textContent || 'Link';
-    let shown = el.href;
-    try { const u = new URL(el.href, location.href); shown = (u.protocol === 'mailto:' ? el.href.slice(7) : u.host + u.pathname.replace(/\/$/, '')); } catch (e) {}
-    $('linkName').textContent = title;
-    $('linkUrl').textContent = shown;
-    yesBtn.href = el.href;
+    const dl = el.dataset.download;
+    yesBtn.href = el.getAttribute('href');
+    if (dl) {                                   // CV: offer to download the PDF instead of visiting a page
+      $('linkQ').textContent = 'DOWNLOAD MY CV?';
+      $('linkName').textContent = 'Lucas Caldentey — CV';
+      $('linkUrl').textContent = dl + ' · PDF';
+      yesBtn.setAttribute('download', dl); yesBtn.removeAttribute('target');
+      yesBtn.firstChild.textContent = 'DOWNLOAD ⬇ ';
+    } else {
+      let shown = el.href;
+      try { const u = new URL(el.href, location.href); shown = (u.protocol === 'mailto:' ? 'Email ' + el.href.slice(7) : u.host + u.pathname.replace(/\/$/, '')); } catch (e) {}
+      $('linkQ').textContent = el.href.startsWith('mailto:') ? 'SEND AN EMAIL?' : 'OPEN THIS LINK?';
+      $('linkName').textContent = title;
+      $('linkUrl').textContent = shown;
+      yesBtn.removeAttribute('download'); yesBtn.setAttribute('target', '_blank');
+      yesBtn.firstChild.textContent = el.href.startsWith('mailto:') ? 'WRITE ✉ ' : 'YES ↗ ';
+    }
     modal.hidden = false; modalOpen = true;
     for (const k in keys) keys[k] = 0;
   }
   function closeLinkModal() { modal.hidden = true; modalOpen = false; }
   yesBtn.addEventListener('click', () => setTimeout(closeLinkModal, 0));
+  document.querySelectorAll('a.block.link').forEach(a => a.addEventListener('click', e => { e.preventDefault(); openLinkModal(a); }));
   $('linkNo').addEventListener('click', closeLinkModal);
   modal.addEventListener('click', e => { if (e.target === modal) closeLinkModal(); });
 
@@ -718,7 +784,7 @@
       if (num) {                                   // main area = X-1, rooms = X-2, X-3, …
         const major = num.dataset.base || (num.dataset.base = num.textContent);
         const idx = entering ? [...sec.querySelectorAll('.room')].indexOf(room) + 2 : 1;
-        num.textContent = major.split('-')[0] + '-' + idx;
+        num.textContent = entering && room.dataset.stage ? room.dataset.stage : major.split('-')[0] + '-' + idx;
         num.classList.toggle('sub', entering);
         num.classList.remove('flash'); void num.offsetWidth; num.classList.add('flash');
       }
@@ -751,6 +817,7 @@
       else if (['Escape', 'KeyN', 'Backspace'].includes(e.code)) { e.preventDefault(); closeLinkModal(); }
       return;
     }
+    if (!gameOn) return;
     if (!gameOn) return;
     unlockAudio();
     if (e.code === 'KeyR') { spawn(); return; }
@@ -945,11 +1012,16 @@
   function moveY(dy) {
     const prevBottom = p.y + p.h;
     p.y += dy; p.onGround = false; p.standingOnFloor = false; let landed = null;
+    let bumped = null;
     for (const s of solids) if (blocking(s) && overlap(p, s)) {
       if (dy > 0) { p.y = s.t - p.h; p.onGround = true; p.falling = p.passNext = false; p.standingOnFloor = s.floor; }
-      else if (dy < 0) { p.y = s.b; hitFromBelow(s); }
+      else if (dy < 0) { p.y = s.b; bumped = s; }
       p.vy = 0;
+      if (bumped) break;
     }
+    // Use the box only after collisions are done: opening a panel moves the layout, and the rest of
+    // this check would otherwise run against stale positions (and could bump a box in another section).
+    if (bumped) { p.on = null; hitFromBelow(bumped); return; }
     if (dy >= 0 && !p.climbing) for (const l of ladders) {
       const cx = p.x + p.w / 2;
       if (cx > l.l - 6 && cx < l.r + 6 && prevBottom <= l.t + 0.5 && p.y + p.h >= l.t && !keys.down) {
@@ -1229,11 +1301,11 @@
       for (let x = x0; x < x1; x += 4) ctx.fillRect(Math.round(s.l - ox + x), Math.round((sy + stringY(s, x + 2)) / 2) * 2 - 1, 4, 3);
       ctx.fillStyle = '#566c86';
       ctx.fillRect(s.l - ox, sy - 8, 8, 16); ctx.fillRect(s.r - ox - 8, sy - 8, 8, 16);
-      // chord chip at the left end
+      // chord chip at the right end, under (and just left of) the "!" marker
       ctx.font = '8px "Press Start 2P", monospace';
-      const chip = '♪ ' + s.chord, cw = ctx.measureText(chip).width + 12;
-      ctx.fillStyle = 'rgba(6,8,22,.8)'; ctx.fillRect(s.l - ox + 14, sy + 10, cw, 18);
-      ctx.fillStyle = '#ffcd75'; ctx.fillText(chip, s.l - ox + 20, sy + 23);
+      const chip = '♪ ' + s.chord, cw = ctx.measureText(chip).width + 12, chipR = Math.min(s.r, VW()) - ox - 22;
+      ctx.fillStyle = 'rgba(6,8,22,.8)'; ctx.fillRect(chipR - cw, sy + 10, cw, 18);
+      ctx.fillStyle = '#ffcd75'; ctx.fillText(chip, chipR - cw + 6, sy + 23);
       // "!" marker at the right end: walk there to read about the chord
       if (s.note) {
         const mx = Math.min(s.r, VW()) - ox - 44, my = sy - 64 + (Math.sin(now * 4 + s.i) > 0 ? -3 : 0);
@@ -1300,6 +1372,74 @@
     }
   }
 
+  // ================= SECRETS =================
+  // 1) Walk off the LEFT edge of a section that has a room with data-enter="left" (Experience → Camino).
+  // 2) Touch the blue-outlined cloud drifting through Hobbies → Poetry.
+  let leftPush = 0;
+  const foundSecrets = new Set();
+  function secretToast(room) {
+    if (foundSecrets.has(room.id)) return;
+    foundSecrets.add(room.id); toast('★ SECRET FOUND! ★');
+    playChord({ notes: [72, 76, 79, 84], voices: [] }, 0.35, 0.8, 0.07);
+  }
+  function checkSecrets() {
+    if (wipe || !p.on) { leftPush = 0; return; }
+    const sec = sections[p.on.i] && sections[p.on.i].el;
+    if (!sec || sec.classList.contains('in-room')) { leftPush = 0; return; }
+    const room = sec.querySelector('.room[data-enter="left"]');
+    if (room && keys.left && p.x <= 1) {
+      leftPush += DT;
+      if (leftPush > 0.18) { leftPush = 0; secretToast(room); enterRoom(sec, room); }
+    } else leftPush = 0;
+  }
+  const blueCloud = { x: -200, k: 4, room: 'room-poetry', w: 132, h: 44, img: null };
+  function makeBlueCloud() {
+    const c = document.createElement('canvas'); c.width = blueCloud.w; c.height = blueCloud.h;
+    const g = c.getContext('2d'), blobs = [[30, 28, 16], [56, 20, 20], [84, 22, 18], [106, 29, 14]];
+    const inside = (x, y) => blobs.some(([bx, by, r]) => Math.hypot(x - bx, (y - by) * 1.2) < r) && y < 40;
+    for (let y = 0; y < c.height; y += 4) for (let x = 0; x < c.width; x += 4) {
+      if (!inside(x + 2, y + 2)) continue;
+      const edge = !inside(x - 2, y + 2) || !inside(x + 6, y + 2) || !inside(x + 2, y - 2) || !inside(x + 2, y + 6);
+      g.fillStyle = edge ? '#41a6f6' : (y > 28 ? '#d8e8f6' : '#f6faff'); g.fillRect(x, y, 4, 4);
+    }
+    blueCloud.img = c;
+  }
+  makeBlueCloud();
+  function blueCloudRect() {
+    const s = strings[blueCloud.k], sec = sections[blueCloud.k];
+    if (!s || !sec || sec.el.classList.contains('in-room')) return null;
+    return { l: blueCloud.x, t: s.y - 132, r: blueCloud.x + blueCloud.w, b: s.y - 88 };
+  }
+  function updateBlueCloud(dt) {
+    blueCloud.x += 55 * dt;
+    if (blueCloud.x > VW() + 60) blueCloud.x = -blueCloud.w - 60;
+    const r = blueCloudRect();
+    if (!r || wipe || !gameOn) return;
+    const hit = p.x < r.r - 18 && p.x + p.w > r.l + 18 && p.y < r.b - 8 && p.y + p.h > r.t + 8;
+    if (hit) {
+      const sec = sections[blueCloud.k].el, room = document.getElementById(blueCloud.room);
+      if (room) { secretToast(room); enterRoom(sec, room); }
+    }
+  }
+  function drawSecretHints() {
+    const ox = scrollX, oy = scrollY;
+    const r = blueCloudRect();
+    if (r && blueCloud.img) {
+      const bob = Math.sin(now * 2) > 0 ? -2 : 0;
+      ctx.drawImage(blueCloud.img, Math.round(r.l - ox), Math.round(r.t - oy + bob));
+    }
+    // a yellow Camino arrow at the left end of the Experience string
+    sections.forEach((sec, i) => {
+      if (!sec.el.querySelector('.room[data-enter="left"]') || sec.el.classList.contains('in-room')) return;
+      const s = strings[i], x = 20 - ox, y = s.y - 58 - oy + (Math.sin(now * 3) > 0 ? -2 : 0);
+      if (y < -40 || y > innerHeight + 40) return;
+      ctx.fillStyle = '#1a1c2c'; ctx.fillRect(x - 2, y - 2, 34, 22);
+      ctx.fillStyle = '#ffe14d';
+      ctx.fillRect(x + 12, y + 6, 18, 6);                                  // shaft
+      for (let k = 0; k < 4; k++) ctx.fillRect(x + 2 + k * 3, y + 9 - k * 2 - 1, 3, 2 + k * 4);   // head
+    });
+  }
+
   // ================= CHORD DESCRIPTIONS =================
   const chordBox = $('chordBox'), cbTitle = $('cbTitle'), cbText = $('cbText');
   let chordOpen = null, chordT0 = 0;          // chordOpen is the string's index (string objects are rebuilt every second)
@@ -1363,9 +1503,10 @@
       if (gameOn) {
         acc += dt;
         if (modalOpen) { acc = 0; now += dt; }        // paused while the link dialog is open
-        while (acc >= DT) { step(); now += DT; acc -= DT; }
+        while (acc >= DT) { step(); checkSecrets(); now += DT; acc -= DT; }
+        updateBlueCloud(dt);
         camera(dt);
-        draw(); drawWipe(); updateChordBox();
+        draw(); drawSecretHints(); drawWipe(); updateChordBox();
       } else now += dt;
       drawBackground();
     } catch (e) { console.error(e); }
