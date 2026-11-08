@@ -98,18 +98,23 @@
   /* The info panel opens in the page flow, above the row: it pushes the row and string down
      instead of covering anything, and spreads across the full width (two columns when long). */
   .panel-slot{display:none;margin:0 0 30px}
+  .panel-slot .panel{width:min(680px,100%)}
+  /* rows with tall extras (Experience) open the panel in the empty space just above the boxes */
+  .row{position:relative}
+  .panel-slot.inrow{position:absolute;left:0;bottom:calc(100% + 20px);margin:0;z-index:4}
   .panel-slot.show{display:block;animation:panelIn .2s steps(3)}
   @keyframes panelIn{from{opacity:0;transform:translateY(8px)}}
   .panel{position:relative;background:#1d2340;border:var(--px) solid var(--gold);box-shadow:var(--px) var(--px) 0 #000;
     padding:16px 22px;font-size:21px;line-height:1.3}
   .panel h4{font-family:'Press Start 2P',monospace;font-weight:normal;font-size:11px;color:var(--gold);margin:0 0 10px}
-  .panel .cols.multi{columns:2 340px;column-gap:44px}
+  .panel .cols.multi{columns:2 250px;column-gap:36px}
   .panel ul,.more ul{margin:6px 0 0;padding-left:22px}
   .panel li{break-inside:avoid}
   .panel::after{content:"";position:absolute;left:var(--ax,40px);bottom:-22px;border:10px solid transparent;border-top-color:var(--gold);transform:translateX(-50%)}
   /* little pixel flags */
   .flag{display:inline-block;width:27px;height:18px;vertical-align:-3px;margin:0 3px;box-shadow:0 0 0 2px #1a1c2c}
   .flags{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+  .block .logo{float:left;height:64px;width:auto;margin:0 14px 4px 0;image-rendering:auto}
   .flag-row{display:flex;gap:12px;margin:2px 0 12px}
   .flag-row .flag{width:42px;height:28px;margin:0}
   /* → boxes: bump to enter a room with more boxes; ← BACK returns */
@@ -120,7 +125,8 @@
   section.in-room > .row:not(.room){display:none}
   section.in-room > .room{display:flex}
   .crumb{color:#a7f070}
-  .stage-num.flash{color:#a7f070;animation:flash .5s steps(2) 2}
+  .stage-num.sub{color:#a7f070}
+  .stage-num.flash{animation:flash .5s steps(2) 2}
   @keyframes flash{50%{color:#fff}}
 
   .q{background:#b86f50;border-color:var(--gold)}
@@ -179,6 +185,47 @@
     background:rgba(6,8,22,.82);border:var(--px) solid var(--edge)}
   body.classic .gate, body.classic .sign, body.classic .game-only{display:none}
 
+  /* "Open this link?" dialog */
+  .modal{position:fixed;inset:0;z-index:70;display:flex;align-items:center;justify-content:center;background:rgba(4,5,13,.55)}
+  .modal[hidden]{display:none}
+  .modal-box{background:var(--bg2);border:var(--px) solid var(--sky);box-shadow:6px 6px 0 #000;padding:22px 26px;max-width:min(520px,90vw);text-align:center}
+  .modal-box h3{font-size:13px;color:var(--gold);margin:0 0 14px}
+  .modal-box p{margin:0 0 6px;font-size:22px}
+  .modal-box .url{color:var(--dim);font-size:18px;word-break:break-all;margin-bottom:18px}
+  .modal-btns{display:flex;gap:14px;justify-content:center}
+  .mbtn{font-family:'Press Start 2P',monospace;font-size:11px;padding:10px 14px;border:3px solid var(--edge);background:#1a1c2c;
+    color:var(--ink);text-decoration:none;cursor:pointer;box-shadow:3px 3px 0 #000}
+  .mbtn.yes{border-color:var(--sky);color:var(--gold)}
+  .mbtn small{display:block;font-size:7px;color:var(--dim);margin-top:6px}
+  .mbtn:hover{filter:brightness(1.25)}
+
+  /* chord description box (retro dialog at the bottom of the screen) */
+  .chordbox{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:65;width:min(760px,92vw);
+    background:#1d2340;border:var(--px) solid var(--gold);box-shadow:5px 5px 0 #000;padding:14px 20px 16px}
+  .chordbox[hidden]{display:none}
+  .cb-title{font-family:'Press Start 2P',monospace;font-size:11px;color:var(--gold);margin-bottom:8px}
+  .cb-text{font-size:22px;line-height:1.3;min-height:58px}
+  body.classic .chordbox{display:none}
+
+  /* ladder: climb with ↑ / ↓ */
+  .stack{position:relative;flex:0 1 250px;min-width:0;margin-left:52px}   /* room for the ladder */
+  .stack > .block{width:100%}
+  .stack > .upper{position:absolute;left:0;right:0;bottom:calc(100% + 118px)}
+  .ladder{position:absolute;left:-46px;width:34px;top:0;bottom:-130px;pointer-events:none;
+    background:linear-gradient(#8f563b,#8f563b) left/6px 100% no-repeat,linear-gradient(#8f563b,#8f563b) right/6px 100% no-repeat,
+      repeating-linear-gradient(to bottom,transparent 0 12px,#b86f50 12px 18px)}
+  .row.tall{margin-top:250px}
+  .row.five{gap:2.6vw}
+  .row.five > .block,.row.five > .stack{flex:0 1 240px}
+  body.classic .ladder{display:none}
+  body.classic .stack{display:flex;flex-direction:column-reverse;gap:24px}
+  body.classic .stack > .upper{position:static}
+  body.classic .row.tall{margin-top:0}
+  body.classic .row{align-items:stretch}
+  body.classic .row > .block, body.classic .row > .stack, body.classic .row.five > .block, body.classic .row.five > .stack{flex:1 1 360px;max-width:640px}
+  body.classic .stack{margin-left:0}
+  body.classic .block.back{display:none}
+
   /* Game layer + HUD */
   #game{position:fixed;inset:0;pointer-events:none;z-index:40;image-rendering:pixelated}
   .hud{position:fixed;top:12px;right:12px;z-index:60;display:flex;gap:8px}
@@ -228,6 +275,19 @@
 
 <canvas id="game"></canvas>
 
+<div class="modal" id="linkModal" hidden>
+  <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="linkQ">
+    <h3 id="linkQ">OPEN THIS LINK?</h3>
+    <p id="linkName"></p>
+    <p class="url" id="linkUrl"></p>
+    <div class="modal-btns">
+      <a class="mbtn yes" id="linkYes" target="_blank" rel="noopener">YES ↗ <small>ENTER</small></a>
+      <button class="mbtn" id="linkNo" type="button">NO <small>ESC</small></button>
+    </div>
+  </div>
+</div>
+<div class="chordbox" id="chordBox" hidden><div class="cb-title" id="cbTitle"></div><div class="cb-text" id="cbText"></div></div>
+
 <main>
   <!-- ============ 1. INTRODUCTION — in orbit ============ -->
   <section id="intro">
@@ -244,17 +304,18 @@
     </div>
     <div class="row">
       <div class="block expand" data-solid><span class="icon">＋</span><h3>ABOUT ME</h3>
-        <p></p>
+        <p>Where I come from · bump me!</p>
         <div class="more"><p class="flag-row"><svg class="flag" viewBox="0 0 12 9" shape-rendering="crispEdges" preserveAspectRatio="none" role="img" aria-label="Argentina"><title>Argentina</title><rect width="12" height="9" fill="#74acdf"/><rect y="3" width="12" height="3" fill="#fff"/><rect x="5" y="4" width="2" height="1" fill="#f6b40e"/></svg><svg class="flag" viewBox="0 0 12 8" shape-rendering="crispEdges" preserveAspectRatio="none" role="img" aria-label="Chile"><title>Chile</title><rect width="12" height="8" fill="#d52b1e"/><rect width="12" height="4" fill="#fff"/><rect width="5" height="4" fill="#0039a6"/><rect x="2" y="1" width="1" height="3" fill="#fff"/><rect x="1" y="2" width="3" height="1" fill="#fff"/></svg><svg class="flag" viewBox="0 0 12 8" shape-rendering="crispEdges" preserveAspectRatio="none" role="img" aria-label="United States"><title>United States</title><rect width="12" height="8" fill="#fff"/><rect width="12" height="1" fill="#b22234"/><rect y="2" width="12" height="1" fill="#b22234"/><rect y="4" width="12" height="1" fill="#b22234"/><rect y="6" width="12" height="1" fill="#b22234"/><rect width="5" height="4" fill="#3c3b6e"/><rect x="1" y="1" width="1" height="1" fill="#fff"/><rect x="3" y="1" width="1" height="1" fill="#fff"/><rect x="2" y="2" width="1" height="1" fill="#fff"/></svg><svg class="flag" viewBox="0 0 12 8" shape-rendering="crispEdges" preserveAspectRatio="none" role="img" aria-label="France"><title>France</title><rect width="4" height="8" fill="#0055a4"/><rect x="4" width="4" height="8" fill="#fff"/><rect x="8" width="4" height="8" fill="#ef4135"/></svg></p>I come from an Argentine and Chilean background, and have grown up living in Chile, America, and France.
-          I feel truly privileged to have had the opportunity and exposure to learn and live through so many different cultures and parts of the world.</div></div>
+          I feel truly privileged to have had the opportunity and exposure to learn and live through so many different cultures and parts of the world.
+          <br><br>Languages: Spanish (native) · English (fluent) · French (fluent) · Chinese (proficient)</div></div>
       <!-- TODO: put your résumé PDF in the repo (e.g. resume.pdf) and set href="resume.pdf" -->
       <a class="block link" data-solid href="resume.pdf" target="_blank" rel="noopener"><span class="icon">↗</span><h3>RÉSUMÉ</h3><p>Open PDF</p></a>
       <a class="block link" data-solid href="https://www.linkedin.com/in/lucas-caldentey/" target="_blank" rel="noopener"><span class="icon">↗</span><h3>LINKEDIN</h3><p>View profile</p></a>
-      <div class="block expand" data-solid data-sprite="battery"><span class="icon">＋</span><h3>THE BATTERY BUTTON</h3><p>Energy storage · bump me!</p>
+      <div class="block expand" data-solid data-sprite="battery"><span class="icon">＋</span><h3>BATTERY BUTTON</h3><p>Energy storage · bump me!</p>
         <div class="more">One of my biggest passions is batteries and energy storage technology.
           It's the field I hope to dedicate myself to, and (in my opinion) one of the most important to reaching a healthy, stable, and sustainable future.</div></div>
     </div>
-    <div class="string" data-chord="Cmaj9"></div>
+    <div class="string" data-chord="Cmaj9" data-note="The home chord (I) in C, with an added 7th and 9th: bright, open and a little dreamy. The journey starts here, at home, looking down at Earth."></div>
   </section>
 
   <!-- ============ 2. EDUCATION ============ -->
@@ -262,30 +323,33 @@
     <div class="stage">2 · EDUCATION · STAGE <span class="stage-num">2-1</span></div>
     <h2>EDUCATION<span class="crumb"></span></h2>
     <div class="row">
-      <div class="block expand" data-solid style="flex-basis:380px"><span class="icon">＋</span><span class="when">EXPECTED 2028</span><h3>B.S. CHEMICAL ENGINEERING</h3><p>Columbia University</p>
-        <div class="more">Relevant coursework:<ul>
-          <li>Electrochemical Materials and Devices (MSAE E4260)</li>
-          <li>Material and Energy Balances (CHEN E2100)</li>
-          <li>Transport Phenomena (CHEN E3110)</li>
-          <li>Thermodynamics for Chemical Engineering (CHEE E3010)</li>
-        </ul>[Honors / GPA]</div></div>
-      <div class="block" data-solid style="flex-basis:300px"><span class="when">EXPECTED 2028</span><h3>MINOR · INDUSTRIAL ENGINEERING</h3><p>Columbia University</p></div>
-      <div class="block expand" data-solid style="flex-basis:380px"><span class="icon">＋</span><span class="when">2026</span><h3>THE UNIVERSITY OF HONG KONG (HKU)</h3><p><svg class="flag" viewBox="0 0 12 8" shape-rendering="crispEdges" preserveAspectRatio="none" role="img" aria-label="Hong Kong"><title>Hong Kong</title><rect width="12" height="8" fill="#de2910"/><rect x="5" y="1" width="2" height="2" fill="#fff"/><rect x="3" y="3" width="2" height="1" fill="#fff"/><rect x="7" y="3" width="2" height="1" fill="#fff"/><rect x="4" y="5" width="1" height="2" fill="#fff"/><rect x="7" y="5" width="1" height="2" fill="#fff"/><rect x="5" y="4" width="2" height="1" fill="#fff"/></svg> Hong Kong · Study abroad semester</p>
-        <div class="more"><svg class="flag" viewBox="0 0 12 8" shape-rendering="crispEdges" preserveAspectRatio="none" role="img" aria-label="Hong Kong"><title>Hong Kong</title><rect width="12" height="8" fill="#de2910"/><rect x="5" y="1" width="2" height="2" fill="#fff"/><rect x="3" y="3" width="2" height="1" fill="#fff"/><rect x="7" y="3" width="2" height="1" fill="#fff"/><rect x="4" y="5" width="1" height="2" fill="#fff"/><rect x="7" y="5" width="1" height="2" fill="#fff"/><rect x="5" y="4" width="2" height="1" fill="#fff"/></svg> [Describe your semester in Hong Kong: the courses you took, what you learned, and what living there was like.]</div></div>
+      <div class="block expand" data-solid style="flex-basis:380px"><span class="icon">＋</span><img class="logo" src="images/columbia-logo.png" alt="Columbia University" onerror="this.remove()"><span class="when">CLASS OF 2028</span><h3>B.S. CHEMICAL ENGINEERING</h3><p>Columbia University · SEAS</p>
+        <div class="more">Relevant coursework:<ul><li>Electrochemical Materials &amp; Devices (MSAE E4260)</li><li>Chemical Engineering Thermodynamics (CHEE E3010)</li><li>Transport Phenomena (CHEN E3110)</li><li>Material &amp; Energy Balances (CHEN E2100)</li><li>Applied Mathematics</li></ul></div></div>
+      <div class="block expand" data-solid style="flex-basis:340px"><span class="icon">＋</span><span class="when">2026</span><h3>THE UNIVERSITY OF HONG KONG (HKU)</h3><p>Hong Kong · Study abroad semester</p>
+        <div class="more"><p class="flag-row"><svg class="flag" viewBox="0 0 12 8" shape-rendering="crispEdges" preserveAspectRatio="none" role="img" aria-label="Hong Kong"><title>Hong Kong</title><rect width="12" height="8" fill="#de2910"/><rect x="5" y="1" width="2" height="2" fill="#fff"/><rect x="3" y="3" width="2" height="1" fill="#fff"/><rect x="7" y="3" width="2" height="1" fill="#fff"/><rect x="4" y="5" width="1" height="2" fill="#fff"/><rect x="7" y="5" width="1" height="2" fill="#fff"/><rect x="5" y="4" width="2" height="1" fill="#fff"/></svg></p>[Describe your semester in Hong Kong: the courses you took, what you learned, and what living there was like.]</div></div>
+      <div class="block" data-solid style="flex-basis:280px"><span class="when">CLASS OF 2028</span><h3>MINOR · INDUSTRIAL ENGINEERING</h3><p>Columbia University</p></div>
     </div>
-    <div class="string" data-chord="Am9"></div>
+    <div class="string" data-chord="Am9" data-note="The relative minor (vi). It shares most of its notes with Cmaj9, so it feels like a soft, reflective step sideways, a good mood for looking back at where I've studied."></div>
   </section>
 
   <!-- ============ 3. EXPERIENCE ============ -->
   <section id="experience">
     <div class="stage">3 · EXPERIENCE · STAGE <span class="stage-num">3-1</span></div>
     <h2>EXPERIENCE<span class="crumb"></span></h2>
-    <div class="row">
-      <div class="block expand" data-solid><span class="icon">＋</span><span class="when">[DATES]</span><h3>[RESEARCH POSITION]</h3><p>[Lab]</p>
-        <div class="more">[What you worked on, methods, results]</div></div>
-      <div class="block expand" data-solid><span class="icon">＋</span><span class="when">[DATES]</span><h3>[INTERNSHIP]</h3><p>[Company]</p>
-        <div class="more">[What you did and what came of it]</div></div>
-      <div class="block portal" data-solid data-room="room-projects"><span class="icon">→</span><h3>PROJECTS</h3><p>[One line] · bump to enter</p></div>
+    <div class="row five tall">
+      <div class="block expand" data-solid><span class="icon">＋</span><span class="when">2025 – PRESENT</span><h3>UNDERGRADUATE RESEARCHER</h3><p>Yip Lab · Columbia</p>
+        <div class="more"><ul><li>Research ion-selective membrane technology for lithium and critical-mineral recovery, water purification and potential energy-storage applications.</li><li>Investigate how the steric properties and electrostatic interactions of ion-exchange membranes independently affect ion selectivity and transport.</li><li>Assess the feasibility of lithium-6 / lithium-7 isotope separation with ion-exchange membranes.</li></ul></div></div>
+      <div class="block expand" data-solid><span class="icon">＋</span><span class="when">AUG 2025 – MAY 2026</span><h3>PROCESS ENGINEERING INTERN</h3><p>SQM · Chile</p>
+        <div class="more"><ul><li>Developed physics-informed neural networks (PINNs) to model sulfur-combustion dynamics at the Santa Victoria plant.</li><li>Derived and solved reaction-dynamic PDEs to embed physical constraints into a neural-network model for process prediction and optimization.</li><li>Combined thermodynamics, numerical methods and machine learning into a scalable process-modeling tool for industrial simulation.</li></ul></div></div>
+      <div class="block expand" data-solid><span class="icon">＋</span><span class="when">JUN – AUG 2025</span><h3>BATTERY R&amp;D INTERN</h3><p>Anton Paar · Austria</p>
+        <div class="more"><ul><li>Characterized battery-slurry rheology, thixotropy and powder-compression conductivity to support battery-manufacturing process optimization.</li><li>Developed Python scripts for department-wide data analysis and optimization.</li><li>Supported calibration and precision testing of the MCR 502 rheometer for commercial product release.</li></ul></div></div>
+      <div class="block expand" data-solid><span class="icon">＋</span><span class="when">2022 – 2024</span><h3>LEAD STUDENT RESEARCHER</h3><p>Argonne National Lab</p>
+        <div class="more"><ul><li>Led a four-person team investigating lithium-vanadium battery-anode performance through Argonne's Exemplary Student Research Program.</li><li>Designed, built and tested battery cells with Prof. Segre's group, using the Center for Nanoscale Materials and the Advanced Photon Source.</li><li>Analyzed the results and presented findings at Argonne's annual research conference.</li></ul></div></div>
+      <div class="stack">
+        <div class="block portal upper" data-solid data-room="room-pubs"><span class="icon">→</span><h3>PUBLICATIONS</h3><p>2 papers · bump to enter</p></div>
+        <div class="ladder" aria-hidden="true"></div>
+        <div class="block portal" data-solid data-room="room-projects"><span class="icon">→</span><h3>PROJECTS</h3><p>[One line] · bump to enter</p></div>
+      </div>
     </div>
     <div class="row room" id="room-projects" data-title="PROJECTS" data-stage="3-2">
       <div class="block back nocoin" data-solid data-back><span class="icon">←</span><h3>BACK</h3></div>
@@ -293,7 +357,13 @@
       <a class="block link" data-solid href="#" target="_blank" rel="noopener"><span class="icon">↗</span><h3>[PROJECT]</h3><p>Open in new tab</p></a>
       <div class="block" data-solid><h3>[PROJECT]</h3><p>[Short description]</p></div>
     </div>
-    <div class="string" data-chord="Fmaj9"></div>
+    <div class="row room" id="room-pubs" data-title="PUBLICATIONS" data-stage="3-3">
+      <div class="block back nocoin" data-solid data-back><span class="icon">←</span><h3>BACK</h3></div>
+      <a class="block link" data-solid href="https://doi.org/10.2139/ssrn.4525930" target="_blank" rel="noopener" style="flex-basis:420px"><span class="icon">↗</span><span class="when">2024</span><h3>URBAN POPULATION SCALING AND CO₂ EMISSIONS</h3><p><i>Intersect: The Stanford Journal of Science, Technology, and Society</i>, 18(1)</p></a>
+      <div class="block expand" data-solid style="flex-basis:420px"><span class="icon">＋</span><span class="when">2023</span><h3>SAIFETY: AUDIO PROTECTION &amp; ETHICAL DATA COLLECTION IN TXT2VID</h3><p>Stanford Compression Forum</p>
+        <div class="more">Caldentey, L., Altmann, A., Xiao, Y. L., &amp; Geleta, F. (2023). <i>SaiFETY: An Integration of Audio Protection and Ethical Data Collection Comparisons Within Txt2Vid.</i> Stanford Compression Forum, STEM to SHTEM Program.</div></div>
+    </div>
+    <div class="string" data-chord="Fmaj9" data-note="The IV chord: warm and spacious. In a progression the IV is where things start to lift and move forward, like building real-world experience."></div>
   </section>
 
   <!-- ============ 4. LEADERSHIP ============ -->
@@ -301,13 +371,25 @@
     <div class="stage">4 · LEADERSHIP · STAGE <span class="stage-num">4-1</span></div>
     <h2>LEADERSHIP<span class="crumb"></span></h2>
     <div class="row">
-      <div class="block expand" data-solid><span class="icon">＋</span><span class="when">[DATES]</span><h3>[ROLE]</h3><p>[Organization]</p>
-        <div class="more">[What you led and the impact]</div></div>
-      <div class="block expand" data-solid><span class="icon">＋</span><span class="when">[DATES]</span><h3>[ROLE]</h3><p>[Organization]</p>
-        <div class="more">[What you led and the impact]</div></div>
-      <div class="block q" data-solid><span class="qmark">?</span><h3>[AWARD]</h3><p class="detail">[Year — description]</p></div>
+      <div class="block expand" data-solid style="flex-basis:340px"><span class="icon">＋</span><span class="when">2026 – PRESENT</span><h3>PRESIDENT</h3><p>Columbia University Sustainable Energy (CUSE)</p>
+        <div class="more"><ul><li>Lead a 40+ member student organization focused on renewable-energy technology, competitions and campus sustainability projects.</li><li>Oversee and lead the team in national competition entries, including the U.S. Department of Energy Solar District Cup.</li></ul></div></div>
+      <div class="block q" data-solid><span class="qmark">?</span><h3>SOLAR DISTRICT CUP</h3><p class="detail">1st Place · 2025 season — U.S. Department of Energy competition, with the CUSE team.</p></div>
+      <div class="block expand" data-solid><span class="icon">＋</span><h3>CAMPUS SOLAR</h3><p>Columbia's first on-campus panels</p>
+        <div class="more">Managing an initiative with Columbia Facilities to install the university's first-ever on-campus solar panel system.</div></div>
+      <div class="block portal" data-solid data-room="room-skills"><span class="icon">→</span><h3>SKILLS</h3><p>Lab, modeling &amp; software · bump to enter</p></div>
     </div>
-    <div class="string" data-chord="G13sus"></div>
+    <div class="row room" id="room-skills" data-title="SKILLS" data-stage="4-2">
+      <div class="block back nocoin" data-solid data-back><span class="icon">←</span><h3>BACK</h3></div>
+      <div class="block expand" data-solid><span class="icon">＋</span><h3>BATTERY &amp; ENERGY</h3><p>Cell testing · membranes …</p>
+        <div class="more"><ul><li>Battery cell testing</li><li>Electrochemistry</li><li>Materials testing</li><li>Ion-exchange membranes</li><li>Lithium separation</li></ul></div></div>
+      <div class="block expand" data-solid><span class="icon">＋</span><h3>LABORATORY</h3><p>Rheometry · TOC analysis …</p>
+        <div class="more"><ul><li>Rheometry</li><li>TOC analysis</li><li>Wet chemistry</li><li>Experimental design</li></ul></div></div>
+      <div class="block expand" data-solid><span class="icon">＋</span><h3>MODELING &amp; AI</h3><p>PINNs · machine learning …</p>
+        <div class="more"><ul><li>Physics-informed neural networks</li><li>Machine learning</li><li>Numerical modeling</li><li>Process optimization</li><li>Data analysis</li></ul></div></div>
+      <div class="block expand" data-solid><span class="icon">＋</span><h3>SOFTWARE</h3><p>Python · SolidWorks …</p>
+        <div class="more"><ul><li>Python</li><li>Java</li><li>Excel</li><li>SolidWorks</li><li>Fusion 360</li><li>LaTeX</li></ul></div></div>
+    </div>
+    <div class="string" data-chord="G13sus" data-note="The V chord, with a suspended 4th and a 13th. It is full of tension that wants to resolve home, the pull that leads you onward, fitting for leadership."></div>
   </section>
 
   <!-- ============ 5. HOBBIES ============ -->
@@ -315,10 +397,9 @@
     <div class="stage">5 · HOBBIES · STAGE <span class="stage-num">5-1</span></div>
     <h2>HOBBIES<span class="crumb"></span></h2>
     <div class="row">
-      <div class="block portal" data-solid data-room="room-music"><span class="icon">→</span><h3>MUSIC PRODUCTION</h3><p>[One line] · bump to listen</p></div>
-      <div class="block expand" data-solid><span class="icon">＋</span><h3>[HOBBY]</h3><p>[One line]</p>
-        <div class="more">[More about it]</div></div>
-      <div class="block" data-solid><h3>[HOBBY]</h3><p>[One or two lines]</p></div>
+      <div class="block portal" data-solid data-room="room-music"><span class="icon">→</span><h3>MUSIC PRODUCTION</h3><p>Piano &amp; my songs · bump to listen</p></div>
+      <div class="block" data-solid><h3>SWIMMING</h3><p>Laps around the pool</p></div>
+      <div class="block" data-solid><h3>FILM</h3><p>Probably watching another David Fincher film</p></div>
     </div>
     <div class="row room" id="room-music" data-title="MUSIC PRODUCTION" data-stage="5-2">
       <div class="block back nocoin" data-solid data-back><span class="icon">←</span><h3>BACK</h3></div>
@@ -327,7 +408,7 @@
       <div class="block track" data-solid data-src="audio/song-3.mp3"><span class="icon">♪</span><h3>[SONG TITLE]</h3><p>[year · genre]</p><div class="prog"><i></i></div></div>
       <a class="block link" data-solid href="#" target="_blank" rel="noopener"><span class="icon">↗</span><h3>MORE MUSIC</h3><p>[SoundCloud / Spotify]</p></a>
     </div>
-    <div class="string" data-chord="Cadd9"></div>
+    <div class="string" data-chord="Cadd9" data-note="Home again (I), voiced low and wide. The I–vi–IV–V–I loop resolves here, right as you land by the house."></div>
   </section>
 </main>
 
@@ -339,8 +420,8 @@
   <div class="ground" data-solid data-floor></div>
   <div class="thanks" id="thanks">
     <h2>THANK YOU FOR VISITING!</h2>
-    <p><span id="thanksCoins">You made it to the end.</span> [A short thank-you note and how to get in touch.]</p>
-    <p>[email] · [LinkedIn] · [GitHub]</p>
+    <p><span id="thanksCoins">You made it to the end.</span> Thanks for falling all the way down with me! I'm always happy to talk batteries, energy storage or music.</p>
+    <p><a href="mailto:ldc2146@columbia.edu">ldc2146@columbia.edu</a> · <a href="https://www.linkedin.com/in/lucas-caldentey/" target="_blank" rel="noopener">LinkedIn</a> · <a href="resume.pdf" target="_blank" rel="noopener">Résumé</a></p>
     <p style="font-size:18px" class="game-only">double-tap ↑ to head back up</p>
   </div>
   <p class="copy">© Lucas Caldentey</p>
@@ -427,7 +508,7 @@
   // ================= PLAYER =================
   const p = { x: 0, y: 0, vx: 0, vy: 0, w: 8 * SCALE, h: SPR_H, onGround: false, face: 1,
               on: null, dropT: 0, dropFrom: null, anim: 0, ghost: false, falling: false, passNext: false,
-              standingOnFloor: false };
+              standingOnFloor: false, climbing: false, moving: false };
   let gameOn = true, camFree = false, lastSounded = null, active = null;
   function spawn() {
     p.x = Math.min(VW() * 0.5, 600); p.y = 20; p.vx = p.vy = 0;
@@ -436,7 +517,7 @@
   }
 
   // ================= WORLD (read from the DOM) =================
-  let solids = [], strings = [], sections = [], spots = [], inter = [];
+  let solids = [], strings = [], sections = [], spots = [], inter = [], ladders = [];
   let gate, thanks, basement, ground, skyStops = [];
   const $ = id => document.getElementById(id);
   const pageRect = el => {
@@ -448,6 +529,7 @@
     solids = [...document.querySelectorAll('[data-solid]')]
       .map(el => ({ el, floor: el.hasAttribute('data-floor'), ...pageRect(el) }))
       .filter(s => s.r - s.l > 1);                                   // skip hidden boxes (e.g. rooms not entered)
+    ladders = [...document.querySelectorAll('.ladder')].map(el => ({ el, ...pageRect(el) })).filter(l => l.r - l.l > 1);
     inter = solids.filter(s => s.el.matches('.link, .track, .expand, [data-room], [data-back]'));
     sections = [...document.querySelectorAll('main > section')].map(el => ({ el, ...pageRect(el) }));
     const old = strings;
@@ -457,7 +539,8 @@
       const wings = er ? [...ext.querySelectorAll('.wing')].map(w => ({ el: w, ...pageRect(w) })) : [];
       const right = er ? er.r + W * 0.06 : W;
       const chord = el.dataset.chord in CHORDS ? el.dataset.chord : 'Cmaj9';
-      return { el, i, l: 0, r: right, L: right, y: (r.t + r.b) / 2, secTop: sec.t, wings,
+      const note = el.dataset.note || '';
+      return { el, i, l: 0, r: right, L: right, y: (r.t + r.b) / 2, secTop: sec.t, wings, note,
                chord, notes: CHORDS[chord], plucks: prev ? prev.plucks : [], voices: prev ? prev.voices : [] };
     });
     spots = [...document.querySelectorAll('.coin-spot')].map(el => { const r = pageRect(el); return { el, x: (r.l + r.r) / 2, y: (r.t + r.b) / 2 }; });
@@ -508,6 +591,24 @@
     readWorld();
   }
 
+  // ================= "OPEN THIS LINK?" =================
+  const modal = $('linkModal'), yesBtn = $('linkYes');
+  let modalOpen = false;
+  function openLinkModal(el) {
+    const title = (el.querySelector('h3') || {}).textContent || 'Link';
+    let shown = el.href;
+    try { const u = new URL(el.href, location.href); shown = (u.protocol === 'mailto:' ? el.href.slice(7) : u.host + u.pathname.replace(/\/$/, '')); } catch (e) {}
+    $('linkName').textContent = title;
+    $('linkUrl').textContent = shown;
+    yesBtn.href = el.href;
+    modal.hidden = false; modalOpen = true;
+    for (const k in keys) keys[k] = 0;
+  }
+  function closeLinkModal() { modal.hidden = true; modalOpen = false; }
+  yesBtn.addEventListener('click', () => setTimeout(closeLinkModal, 0));
+  $('linkNo').addEventListener('click', closeLinkModal);
+  modal.addEventListener('click', e => { if (e.target === modal) closeLinkModal(); });
+
   // ================= LINKS & SONGS =================
   let currentTrack = null;
   function setDuck(on) { if (out) out.gain.setTargetAtTime(on ? 0.25 : 0.9, ac.currentTime, 0.2); }
@@ -533,7 +634,7 @@
     const el = s.el;
     if (el.dataset.sprite) toggleSkin(el.dataset.sprite);
     if (el.matches('.track')) toggleTrack(el);
-    else if (el.matches('a[href]')) el.click();
+    else if (el.matches('a[href]')) openLinkModal(el);
     else if (el.matches('.expand')) toggleExpand(el);
     else if (el.dataset.room) enterRoom(el.closest('section'), document.getElementById(el.dataset.room));
     else if (el.hasAttribute('data-back')) exitRoom(el.closest('section'));
@@ -548,10 +649,12 @@
   // overlaps the strings or other content). One open at a time; it closes when you walk away.
   let openBox = null;
   document.querySelectorAll('.row').forEach(row => {
-    if (!row.querySelector('.expand')) return;
+    if (!row.querySelector(':scope > .expand')) return;
     const slot = document.createElement('div'); slot.className = 'panel-slot';
-    row.parentNode.insertBefore(slot, row);
+    if (row.classList.contains('tall')) { slot.classList.add('inrow'); row.prepend(slot); }
+    else row.parentNode.insertBefore(slot, row);
   });
+  const slotFor = el => { const row = el.closest('.row'); return row.querySelector(':scope > .panel-slot.inrow') || row.previousElementSibling; };
   // Opening/closing a panel moves the row (and everything below it). Move the character and the
   // view by the same amount so the row stays put on screen and the panel seems to grow upward.
   function keepRowInPlace(row, change) {
@@ -566,26 +669,38 @@
   }
   function closePanel() {
     if (!openBox) return;
-    const box = openBox, row = box.closest('.row'), slot = row.previousElementSibling;
+    const box = openBox, row = box.closest('.row'), slot = slotFor(box);
     openBox = null;
     keepRowInPlace(row, () => {
       box.classList.remove('open');
       if (slot && slot.classList.contains('panel-slot')) { slot.classList.remove('show'); slot.innerHTML = ''; }
+      row.style.marginTop = '';
     });
   }
   function toggleExpand(el) {
     const was = el.classList.contains('open');
     closePanel();
     if (was) return;
-    const slot = el.closest('.row').previousElementSibling, more = el.querySelector('.more');
+    const row = el.closest('.row'), slot = slotFor(el), more = el.querySelector('.more');
     if (!slot || !slot.classList.contains('panel-slot') || !more) return;
     const title = (el.querySelector('h3') || {}).textContent || '';
     const long = more.querySelectorAll('li').length > 3;          // lists spread into two columns; paragraphs stay whole
-    keepRowInPlace(el.closest('.row'), () => {
+    keepRowInPlace(row, () => {
       slot.innerHTML = `<div class="panel"><h4>${title}</h4><div class="cols${long ? ' multi' : ''}">${more.innerHTML}</div></div>`;
       slot.classList.add('show'); el.classList.add('open'); openBox = el;
-      const er = el.getBoundingClientRect(), sr = slot.getBoundingClientRect();
-      slot.style.setProperty('--ax', (er.left + er.width / 2 - sr.left) + 'px');
+      const panel = slot.firstElementChild, rr = row.getBoundingClientRect(), er = el.getBoundingClientRect();
+      // usable width: the whole row, or (in-row mode) only up to the stacked Projects/Publications column
+      const stack = slot.classList.contains('inrow') && row.querySelector('.stack');
+      const maxW = (stack ? stack.getBoundingClientRect().left - 70 : rr.right) - rr.left;
+      const w = Math.min(680, maxW);
+      panel.style.width = w + 'px';
+      const left = clamp(er.left + er.width / 2 - rr.left - w / 2, 0, Math.max(0, maxW - w));
+      if (slot.classList.contains('inrow')) slot.style.left = left + 'px'; else panel.style.marginLeft = left + 'px';
+      panel.style.setProperty('--ax', (er.left + er.width / 2 - rr.left - left) + 'px');
+      if (slot.classList.contains('inrow')) {               // make sure the gap above the boxes is tall enough
+        const need = slot.offsetHeight + 40, have = parseFloat(getComputedStyle(row).marginTop);
+        if (need > have) row.style.marginTop = need + 'px';
+      }
     });
     playChord({ notes: [72, 79], voices: [] }, 0.2, 0, 0.05);
   }
@@ -604,6 +719,7 @@
         const major = num.dataset.base || (num.dataset.base = num.textContent);
         const idx = entering ? [...sec.querySelectorAll('.room')].indexOf(room) + 2 : 1;
         num.textContent = major.split('-')[0] + '-' + idx;
+        num.classList.toggle('sub', entering);
         num.classList.remove('flash'); void num.offsetWidth; num.classList.add('flash');
       }
       closePanel();
@@ -630,6 +746,11 @@
     lastUpTap = t; return false;
   }
   addEventListener('keydown', e => {
+    if (modalOpen) {                       // the link dialog has the keyboard while it is open
+      if (['Enter', 'KeyE', 'KeyY', 'Space'].includes(e.code)) { e.preventDefault(); yesBtn.click(); }
+      else if (['Escape', 'KeyN', 'Backspace'].includes(e.code)) { e.preventDefault(); closeLinkModal(); }
+      return;
+    }
     if (!gameOn) return;
     unlockAudio();
     if (e.code === 'KeyR') { spawn(); return; }
@@ -637,10 +758,17 @@
     if (e.code === 'KeyU' || e.code === 'PageUp') { e.preventDefault(); warpUp(); return; }
     const k = map[e.code]; if (!k) return;
     e.preventDefault(); camFree = false; helpEl.classList.add('faded');
-    if ((e.code === 'ArrowUp' || e.code === 'KeyW') && !e.repeat && upTap()) return;
+    if ((e.code === 'ArrowUp' || e.code === 'KeyW') && !e.repeat && !ladderAt() && upTap()) return;
     keys[k] = 1;
   });
   addEventListener('keyup', e => { const k = map[e.code]; if (k) keys[k] = 0; });
+  // If the page loses focus (e.g. a link opened a new tab) the key-up never arrives,
+  // so forget every held key instead of running forever.
+  const releaseAll = () => { for (const k in keys) keys[k] = 0; };
+  addEventListener('blur', releaseAll);
+  addEventListener('pointerdown', () => { try { window.focus(); } catch (e) {} });
+  addEventListener('pagehide', releaseAll);
+  document.addEventListener('visibilitychange', () => { if (document.hidden) releaseAll(); });
   addEventListener('wheel', () => { if (gameOn) camFree = true; }, { passive: true });
   addEventListener('touchmove', e => { if (gameOn && !e.target.closest('.pad')) camFree = true; }, { passive: true });
   document.querySelectorAll('.pad button').forEach(b => {
@@ -822,6 +950,13 @@
       else if (dy < 0) { p.y = s.b; hitFromBelow(s); }
       p.vy = 0;
     }
+    if (dy >= 0 && !p.climbing) for (const l of ladders) {
+      const cx = p.x + p.w / 2;
+      if (cx > l.l - 6 && cx < l.r + 6 && prevBottom <= l.t + 0.5 && p.y + p.h >= l.t && !keys.down) {
+        p.y = l.t - p.h; p.vy = 0; p.onGround = true; p.falling = false;
+      }
+    }
+    if (p.climbing) return;
     if (dy >= 0) for (const s of strings) {
       if (s === p.dropFrom && p.dropT > 0) continue;
       let cx = p.x + p.w / 2;
@@ -850,13 +985,24 @@
   }
   const insideAnySolid = () => solids.some(s => !s.floor && overlap(p, s));
 
+  const ladderAt = () => {
+    const cx = p.x + p.w / 2;
+    return ladders.find(l => cx > l.l - 6 && cx < l.r + 6 && p.y + p.h > l.t - 3 && p.y < l.b);
+  };
+
   // ================= LOOP =================
   let now = 0, acc = 0, last = performance.now(), jumpHeld = false, downHeld = false;
   function step() {
     const W = VW();
     p.vx = (keys.right - keys.left) * RUN;
     if (p.vx) p.face = Math.sign(p.vx);
-    if (keys.jump && !jumpHeld && p.onGround) { p.vy = JUMP; p.onGround = false; p.on = null; }
+    // ladders: ↑ climbs instead of jumping while you're in front of one
+    const lad = ladderAt();
+    if (lad && keys.jump && !p.climbing && p.y + p.h > lad.t + 4) { p.climbing = true; p.x = (lad.l + lad.r) / 2 - p.w / 2; p.on = null; }
+    if (p.climbing && (!lad || (p.vx && p.y + p.h > lad.t + 8 && p.y + p.h < lad.b - 8))) {
+      if (!lad) p.climbing = false; else p.vx = 0;          // no sideways moves mid-ladder
+    }
+    if (!p.climbing && keys.jump && !jumpHeld && p.onGround && !(lad && p.y + p.h > lad.t + 4)) { p.vy = JUMP; p.onGround = false; p.on = null; }
     jumpHeld = !!keys.jump;
 
     const cx = p.x + p.w / 2;
@@ -870,11 +1016,19 @@
       else if (!p.standingOnFloor) { p.falling = true; p.onGround = false; p.vy = 120; }
     }
     p.dropT -= DT;
-    p.ghost = p.falling || (keys.down && !p.onGround) || insideAnySolid();
+    p.ghost = p.climbing || p.falling || (keys.down && !p.onGround) || insideAnySolid();   // climbers pass in front of boxes
 
-    p.vy = Math.min(p.vy + G * (keys.down && !p.onGround ? DIVE : 1) * DT, MAXFALL);
+    if (p.climbing) {
+      p.vy = keys.jump ? -230 : keys.down ? 230 : 0;
+      if (lad && p.vy < 0 && p.y + p.h + p.vy * DT <= lad.t) {   // reached the top: stand on it
+        p.y = lad.t - p.h; p.vy = 0; p.climbing = false; p.onGround = true;
+      }
+      if (lad && p.vy > 0 && p.y + p.h >= lad.b - 34) p.climbing = false;   // back down at the string
+    } else p.vy = Math.min(p.vy + G * (keys.down && !p.onGround ? DIVE : 1) * DT, MAXFALL);
+    const xBefore = p.x;
     moveX(p.vx * DT);
     moveY(p.vy * DT);
+    p.moving = Math.abs(p.x - xBefore) > 0.05;
     if (p.y > document.documentElement.scrollHeight + 200) spawn();
     p.anim += DT;
 
@@ -1075,6 +1229,21 @@
       for (let x = x0; x < x1; x += 4) ctx.fillRect(Math.round(s.l - ox + x), Math.round((sy + stringY(s, x + 2)) / 2) * 2 - 1, 4, 3);
       ctx.fillStyle = '#566c86';
       ctx.fillRect(s.l - ox, sy - 8, 8, 16); ctx.fillRect(s.r - ox - 8, sy - 8, 8, 16);
+      // chord chip at the left end
+      ctx.font = '8px "Press Start 2P", monospace';
+      const chip = '♪ ' + s.chord, cw = ctx.measureText(chip).width + 12;
+      ctx.fillStyle = 'rgba(6,8,22,.8)'; ctx.fillRect(s.l - ox + 14, sy + 10, cw, 18);
+      ctx.fillStyle = '#ffcd75'; ctx.fillText(chip, s.l - ox + 20, sy + 23);
+      // "!" marker at the right end: walk there to read about the chord
+      if (s.note) {
+        const mx = Math.min(s.r, VW()) - ox - 44, my = sy - 64 + (Math.sin(now * 4 + s.i) > 0 ? -3 : 0);
+        const reading = chordOpen === s.i;
+        ctx.fillStyle = '#1a1c2c'; ctx.fillRect(mx - 2, my - 2, 26, 30);
+        ctx.fillStyle = reading ? '#a7f070' : '#ffcd75'; ctx.fillRect(mx, my, 22, 26);
+        ctx.fillStyle = '#1a1c2c'; ctx.font = '14px "Press Start 2P", monospace';
+        ctx.fillText(reading ? '♪' : '!', mx + 4, my + 20);
+        ctx.fillStyle = reading ? '#a7f070' : '#ffcd75'; ctx.fillRect(mx + 8, my + 26, 6, 6);
+      }
     }
     for (let i = streaks.length - 1; i >= 0; i--) {
       const st = streaks[i], t = now - st.t0; if (t > 0.35) { streaks.splice(i, 1); continue; }
@@ -1090,8 +1259,9 @@
       drawCoin(pp.x - ox, pp.y - oy - 20 - 60 * t, now * 3, 1 - t / 0.7);
     }
     let f = 'idle';
-    if (!p.onGround) f = p.ghost ? 'dive' : 'jump';
-    else if (p.vx) f = (Math.floor(p.anim * 10) % 2) ? 'run1' : 'run2';
+    if (p.climbing) f = (Math.floor(p.y / 14) % 2) ? 'run1' : 'run2';
+    else if (!p.onGround) f = p.ghost ? 'dive' : 'jump';
+    else if (p.moving) f = (Math.floor(p.anim * 10) % 2) ? 'run1' : 'run2';
     const sag = p.on ? 5 : 0;
     const dx = Math.round(p.x - ox - (SPR_W - p.w) / 2), dy = Math.round(p.y - oy + sag);
     ctx.save();
@@ -1099,6 +1269,12 @@
     if (p.face < 0) { ctx.translate(dx + SPR_W, dy); ctx.scale(-1, 1); ctx.drawImage(spr, 0, 0); }
     else ctx.drawImage(spr, dx, dy);
     ctx.restore();
+    const ld = ladderAt();
+    if (ld && !p.climbing && p.y + p.h > ld.t + 4) {
+      ctx.font = '8px "Press Start 2P", monospace';
+      ctx.fillStyle = '#1a1c2c'; ctx.fillRect(dx - 20, dy - 24, 74, 18);
+      ctx.fillStyle = '#a7f070'; ctx.fillText('↑ CLIMB', dx - 14, dy - 11);
+    }
     if (active) {                                        // "E" prompt
       const el = active.el;
       const label = el.matches('.track') ? (el.classList.contains('playing') ? 'E ❚❚' : 'E ♪')
@@ -1121,6 +1297,27 @@
     for (let y = 0; y < H; y += c) for (let x = 0; x < W; x += c) {
       const s = c * clamp(k * 2.2 - (x / W + y / H) * 0.6, 0, 1);
       if (s > 0) ctx.fillRect(x + (c - s) / 2, y + (c - s) / 2, s, s);
+    }
+  }
+
+  // ================= CHORD DESCRIPTIONS =================
+  const chordBox = $('chordBox'), cbTitle = $('cbTitle'), cbText = $('cbText');
+  let chordOpen = null, chordT0 = 0;          // chordOpen is the string's index (string objects are rebuilt every second)
+  const CHORD_NAMES = { Cmaj9: 'C MAJOR 9', Am9: 'A MINOR 9', Fmaj9: 'F MAJOR 9', G13sus: 'G 13 SUS4', Cadd9: 'C ADD 9' };
+  function updateChordBox() {
+    let want = null;
+    if (gameOn && p.on && p.on.note && !wipe) {
+      const edge = Math.min(p.on.r, VW());
+      if (p.x + p.w / 2 > edge - (chordOpen === p.on.i ? 160 : 120)) want = p.on.i;
+    }
+    if (want !== chordOpen) {
+      chordOpen = want; chordT0 = now;
+      chordBox.hidden = want === null;
+      if (want !== null) { const s = strings[want]; cbTitle.textContent = '♪ ' + (CHORD_NAMES[s.chord] || s.chord) + ' — ' + s.chord; cbText.textContent = ''; }
+    }
+    if (chordOpen !== null) {                            // types in once, then stays put
+      const note = strings[chordOpen].note, n = Math.min(note.length, Math.floor((now - chordT0) * 55));
+      if (cbText.textContent.length < n) cbText.textContent = note.slice(0, n);
     }
   }
 
@@ -1165,9 +1362,10 @@
       }
       if (gameOn) {
         acc += dt;
+        if (modalOpen) { acc = 0; now += dt; }        // paused while the link dialog is open
         while (acc >= DT) { step(); now += DT; acc -= DT; }
         camera(dt);
-        draw(); drawWipe();
+        draw(); drawWipe(); updateChordBox();
       } else now += dt;
       drawBackground();
     } catch (e) { console.error(e); }
@@ -1192,11 +1390,12 @@
     for (const k in keys) keys[k] = 0;
     document.querySelectorAll('section.in-room').forEach(sec => {
       sec.classList.remove('in-room'); const c = sec.querySelector('.crumb'); if (c) c.textContent = '';
-      const n = sec.querySelector('.stage-num'); if (n && n.dataset.base) n.textContent = n.dataset.base;
+      const n = sec.querySelector('.stage-num'); if (n && n.dataset.base) { n.textContent = n.dataset.base; n.classList.remove('sub', 'flash'); }
       sec.querySelectorAll('.room').forEach(r => r.style.display = '');
     });
     closePanel();
     readWorld(); buildScenery();
+    chordOpen = null; chordBox.hidden = true;
     if (!gameOn) scrollTo(0, scrollY);
     else { spawn(); camY = scrollY; camV = 0; camX = scrollX; camXV = 0; }
   };
