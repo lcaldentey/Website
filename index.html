@@ -14,16 +14,17 @@
 <style>
   /* ==================================================================
      HOW TO ADD CONTENT
-     • Info box (bumpable, gives a coin):
+     • Info box (bump it for a coin):
          <div class="block" data-solid><h3>TITLE</h3><p>text</p></div>
-     • Link box (bump it or press E under it → opens in a new tab):
+     • ＋ box (bump → a panel with more info opens above the row):
+         <div class="block expand" data-solid><span class="icon">＋</span><h3>TITLE</h3><p>teaser</p>
+           <div class="more">Longer text…</div></div>
+     • Link box (bump it or press E under it → opens in a new tab). Put the URL only in href:
          <a class="block link" data-solid href="https://…" target="_blank" rel="noopener">…</a>
-     • Song box (bump it, press E, or click → plays / pauses):
+     • Song box (bump, E, or click → play / pause):
          <div class="block track" data-solid data-src="audio/song.mp3">…</div>
+     • → room: a box with data-room="room-x" + a <div class="row room" id="room-x" data-title="…">.
      • Background item (photo, drawing — never in the way): anything WITHOUT data-solid.
-     • Subsection: a .wing inside a section's .ext (it sits off the right edge in game
-       mode and appears inline in classic mode). Add class "secret" to hide it as a secret.
-     • .coin-spot inside a wing = floating coin (jump to collect).
      Keep each .row to about 4 boxes so all stay at bumping height.
      ================================================================== */
   :root{
@@ -55,7 +56,7 @@
     background:rgba(6,8,22,.72);padding:8px 12px}
   .goto{cursor:pointer;transition:color .15s}
   .goto:hover{color:var(--sky)}
-  p.lead{max-width:640px;color:var(--dim);margin:0 0 40px}
+  p.lead{max-width:800px;color:#d3e1ec;margin:0 0 40px;background:rgba(6,8,22,.72);padding:12px 16px}
   .tag{display:inline-block;background:var(--accent);color:var(--ink);padding:6px 14px;margin:0 0 30px;
        font-family:'Press Start 2P',monospace;font-size:11px;box-shadow:var(--px) var(--px) 0 #000}
 
@@ -93,10 +94,24 @@
   /* ＋ boxes: bump to open a panel with more info above the box */
   .block.expand{border-color:var(--gold)}
   .block.expand .more{display:none}
-  .block.expand.open .more{display:block;position:absolute;left:-4px;right:-4px;bottom:calc(100% + 14px);z-index:5;
-    background:#1d2340;border:var(--px) solid var(--gold);padding:12px 16px;box-shadow:var(--px) var(--px) 0 #000;font-size:20px}
-  .block.expand.open .more::after{content:"";position:absolute;left:24px;bottom:-14px;border:10px solid transparent;border-top-color:var(--gold)}
-  .more ul{margin:6px 0 0;padding-left:20px}
+  .block.expand.open{background:#323b62}
+  /* The info panel opens in the page flow, above the row: it pushes the row and string down
+     instead of covering anything, and spreads across the full width (two columns when long). */
+  .panel-slot{display:none;margin:0 0 30px}
+  .panel-slot.show{display:block;animation:panelIn .2s steps(3)}
+  @keyframes panelIn{from{opacity:0;transform:translateY(8px)}}
+  .panel{position:relative;background:#1d2340;border:var(--px) solid var(--gold);box-shadow:var(--px) var(--px) 0 #000;
+    padding:16px 22px;font-size:21px;line-height:1.3}
+  .panel h4{font-family:'Press Start 2P',monospace;font-weight:normal;font-size:11px;color:var(--gold);margin:0 0 10px}
+  .panel .cols.multi{columns:2 340px;column-gap:44px}
+  .panel ul,.more ul{margin:6px 0 0;padding-left:22px}
+  .panel li{break-inside:avoid}
+  .panel::after{content:"";position:absolute;left:var(--ax,40px);bottom:-22px;border:10px solid transparent;border-top-color:var(--gold);transform:translateX(-50%)}
+  /* little pixel flags */
+  .flag{display:inline-block;width:27px;height:18px;vertical-align:-3px;margin:0 3px;box-shadow:0 0 0 2px #1a1c2c}
+  .flags{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+  .flag-row{display:flex;gap:12px;margin:2px 0 12px}
+  .flag-row .flag{width:42px;height:28px;margin:0}
   /* → boxes: bump to enter a room with more boxes; ← BACK returns */
   .block.portal{border-color:var(--green)}
   .block.portal .icon,.block.back .icon{color:#a7f070}
@@ -105,6 +120,8 @@
   section.in-room > .row:not(.room){display:none}
   section.in-room > .room{display:flex}
   .crumb{color:#a7f070}
+  .stage-num.flash{color:#a7f070;animation:flash .5s steps(2) 2}
+  @keyframes flash{50%{color:#fff}}
 
   .q{background:#b86f50;border-color:var(--gold)}
   .q .qmark{font-family:'Press Start 2P',monospace;color:var(--gold);font-size:20px;float:right;margin-left:8px}
@@ -146,11 +163,11 @@
 
   /* ---------- Classic mode: everything inline, nothing hidden ---------- */
   body.classic .room{display:flex;margin-top:-10px}
-  body.classic .room::before{content:"→ " attr(data-title);flex:0 0 100%;font-family:'Press Start 2P',monospace;font-size:12px;
+  body.classic .room::before{content:"→ " attr(data-title) " · STAGE " attr(data-stage);flex:0 0 100%;font-family:'Press Start 2P',monospace;font-size:12px;
     color:#a7f070;text-shadow:2px 2px 0 #000}
   body.classic .block.back{display:none}
-  body.classic .block.expand .more{display:block;position:static;border:0;padding:8px 0 0;background:none;box-shadow:none}
-  body.classic .block.expand .more::after{display:none}
+  body.classic .block.expand .more{display:block;padding:8px 0 0}
+  body.classic .panel-slot{display:none !important}
   body.classic .block .icon{display:none}
   body.classic .row{margin-bottom:40px;flex-wrap:wrap;gap:24px}
   body.classic .block[data-solid]::after{display:none}
@@ -216,48 +233,52 @@
   <section id="intro">
     <div class="hero">
       <div>
-        <div class="stage">1 · INTRODUCTION · Stage 1-1</div>
+        <div class="stage">1 · INTRODUCTION · STAGE <span class="stage-num">1-1</span></div>
         <h1>LUCAS<br>CALDENTEY</h1>
         <div class="tag">CHEMICAL ENGINEERING · COLUMBIA UNIVERSITY</div>
-        <p class="lead">Hola! I'm Lucas, a third-year Chemical Engineering student at Columbia University. If im not grooving with some piano composition, 
+        <p class="lead">Hola! I'm Lucas, a third-year Chemical Engineering student at Columbia University. If I'm not grooving with some piano composition,
         swimming laps around the pool, or watching another David Fincher film, you'll probably find me tackling one of the world's most pressing issues: climate change and our fight towards
         a cleaner, more sustainable world. Please feel free to look around!</p>
       </div>
       <div class="photo">[ PHOTO ]<small>background item —<br>not solid</small></div>
     </div>
     <div class="row">
-      <div class="block expand" data-solid><span class="icon">＋</span><h3>ABOUT ME</h3><p>[One line]</p>
-        <div class="more">[I come from an Argentine and Chilean background, and have grown up living in Chile, America, and France. 
-          I feel truly previledged to have had the opportunity and exposure to learn and live through so many different cultures and parts of the world.]</div></div>
-      <a class="block link" data-solid href="#" target="_blank" rel="noopener"><span class="icon">↗</span><h3>Resume</h3><p>[link to PDF]</p></a>
-      <a class="block link" data-solid href="#" target="_blank" rel="noopener"><span class="icon">↗</span><h3>Linkedin</h3><p>[https://www.linkedin.com/in/lucas-caldentey/]</p></a>
-      <div class="block expand" data-solid><span class="icon">＋</span><h3>Battery Button</h3><p>[One line]</p>
-        <div class="more">[One of my biggest passions is in batteries and energy storage technology. 
-          Its the field I hope to dedicate myself to, and one of the most important (in my opinion) to reaching a healthy, stable, and sustaiable future.]</div></div>
+      <div class="block expand" data-solid><span class="icon">＋</span><h3>ABOUT ME</h3>
+        <p>Where I come from · bump me!</p>
+        <div class="more"><p class="flag-row"><svg class="flag" viewBox="0 0 12 9" shape-rendering="crispEdges" preserveAspectRatio="none" role="img" aria-label="Argentina"><title>Argentina</title><rect width="12" height="9" fill="#74acdf"/><rect y="3" width="12" height="3" fill="#fff"/><rect x="5" y="4" width="2" height="1" fill="#f6b40e"/></svg><svg class="flag" viewBox="0 0 12 8" shape-rendering="crispEdges" preserveAspectRatio="none" role="img" aria-label="Chile"><title>Chile</title><rect width="12" height="8" fill="#d52b1e"/><rect width="12" height="4" fill="#fff"/><rect width="5" height="4" fill="#0039a6"/><rect x="2" y="1" width="1" height="3" fill="#fff"/><rect x="1" y="2" width="3" height="1" fill="#fff"/></svg><svg class="flag" viewBox="0 0 12 8" shape-rendering="crispEdges" preserveAspectRatio="none" role="img" aria-label="United States"><title>United States</title><rect width="12" height="8" fill="#fff"/><rect width="12" height="1" fill="#b22234"/><rect y="2" width="12" height="1" fill="#b22234"/><rect y="4" width="12" height="1" fill="#b22234"/><rect y="6" width="12" height="1" fill="#b22234"/><rect width="5" height="4" fill="#3c3b6e"/><rect x="1" y="1" width="1" height="1" fill="#fff"/><rect x="3" y="1" width="1" height="1" fill="#fff"/><rect x="2" y="2" width="1" height="1" fill="#fff"/></svg><svg class="flag" viewBox="0 0 12 8" shape-rendering="crispEdges" preserveAspectRatio="none" role="img" aria-label="France"><title>France</title><rect width="4" height="8" fill="#0055a4"/><rect x="4" width="4" height="8" fill="#fff"/><rect x="8" width="4" height="8" fill="#ef4135"/></svg></p>I come from an Argentine and Chilean background, and have grown up living in Chile, America, and France.
+          I feel truly privileged to have had the opportunity and exposure to learn and live through so many different cultures and parts of the world.</div></div>
+      <!-- TODO: put your résumé PDF in the repo (e.g. resume.pdf) and set href="resume.pdf" -->
+      <a class="block link" data-solid href="resume.pdf" target="_blank" rel="noopener"><span class="icon">↗</span><h3>RÉSUMÉ</h3><p>Open PDF</p></a>
+      <a class="block link" data-solid href="https://www.linkedin.com/in/lucas-caldentey/" target="_blank" rel="noopener"><span class="icon">↗</span><h3>LINKEDIN</h3><p>View profile</p></a>
+      <div class="block expand" data-solid data-sprite="battery"><span class="icon">＋</span><h3>BATTERY BUTTON</h3><p>Energy storage · bump me!</p>
+        <div class="more">One of my biggest passions is batteries and energy storage technology.
+          It's the field I hope to dedicate myself to, and (in my opinion) one of the most important to reaching a healthy, stable, and sustainable future.</div></div>
     </div>
     <div class="string" data-chord="Cmaj9"></div>
   </section>
 
   <!-- ============ 2. EDUCATION ============ -->
   <section id="education">
-    <div class="stage">2 · EDUCATION · Stage 2-1</div>
+    <div class="stage">2 · EDUCATION · STAGE <span class="stage-num">2-1</span></div>
     <h2>EDUCATION<span class="crumb"></span></h2>
     <div class="row">
-      <div class="block expand" data-solid style="flex-basis:380px"><span class="icon">＋</span><span class="when">[2028] – [EXPECTED]</span><h3>B.S. CHEMICAL ENGINEERING</h3><p>Columbia University</p>
+      <div class="block expand" data-solid style="flex-basis:380px"><span class="icon">＋</span><span class="when">EXPECTED 2028</span><h3>B.S. CHEMICAL ENGINEERING</h3><p>Columbia University</p>
         <div class="more">Relevant coursework:<ul>
-          <li>[Electrochemical Materials and Devices [MSAE E 4260]]</li>
-          <li>[Material and Energy Balances [CHEN E2100]]</li>
-          <li>[Transport Phenomenon [CHEN E 3110]]</li>
-          <li>[Thermodynamics for Chemical Engineering [CHEE E 3010]]</li>
+          <li>Electrochemical Materials and Devices (MSAE E4260)</li>
+          <li>Material and Energy Balances (CHEN E2100)</li>
+          <li>Transport Phenomena (CHEN E3110)</li>
+          <li>Thermodynamics for Chemical Engineering (CHEE E3010)</li>
         </ul>[Honors / GPA]</div></div>
-      <div class="block" data-solid style="flex-basis:380px"><span class="when">[2026]</span><h3>[Hong Kong University [HKU]</h3><p>[Hong Kong · Study Abroad Semester]</p></div>
+      <div class="block expand" data-solid style="flex-basis:380px"><span class="icon">＋</span><span class="when">2026</span><h3>THE UNIVERSITY OF HONG KONG (HKU)</h3><p><svg class="flag" viewBox="0 0 12 8" shape-rendering="crispEdges" preserveAspectRatio="none" role="img" aria-label="Hong Kong"><title>Hong Kong</title><rect width="12" height="8" fill="#de2910"/><rect x="5" y="1" width="2" height="2" fill="#fff"/><rect x="3" y="3" width="2" height="1" fill="#fff"/><rect x="7" y="3" width="2" height="1" fill="#fff"/><rect x="4" y="5" width="1" height="2" fill="#fff"/><rect x="7" y="5" width="1" height="2" fill="#fff"/><rect x="5" y="4" width="2" height="1" fill="#fff"/></svg> Hong Kong · Study abroad semester</p>
+        <div class="more"><svg class="flag" viewBox="0 0 12 8" shape-rendering="crispEdges" preserveAspectRatio="none" role="img" aria-label="Hong Kong"><title>Hong Kong</title><rect width="12" height="8" fill="#de2910"/><rect x="5" y="1" width="2" height="2" fill="#fff"/><rect x="3" y="3" width="2" height="1" fill="#fff"/><rect x="7" y="3" width="2" height="1" fill="#fff"/><rect x="4" y="5" width="1" height="2" fill="#fff"/><rect x="7" y="5" width="1" height="2" fill="#fff"/><rect x="5" y="4" width="2" height="1" fill="#fff"/></svg> [Describe your semester in Hong Kong: the courses you took, what you learned, and what living there was like.]</div></div>
+      <div class="block" data-solid style="flex-basis:300px"><span class="when">EXPECTED 2028</span><h3>MINOR · INDUSTRIAL ENGINEERING</h3><p>Columbia University</p></div>
     </div>
     <div class="string" data-chord="Am9"></div>
   </section>
 
   <!-- ============ 3. EXPERIENCE ============ -->
   <section id="experience">
-    <div class="stage">3 · EXPERIENCE · STRATOSPHERE</div>
+    <div class="stage">3 · EXPERIENCE · STAGE <span class="stage-num">3-1</span></div>
     <h2>EXPERIENCE<span class="crumb"></span></h2>
     <div class="row">
       <div class="block expand" data-solid><span class="icon">＋</span><span class="when">[DATES]</span><h3>[RESEARCH POSITION]</h3><p>[Lab]</p>
@@ -266,10 +287,10 @@
         <div class="more">[What you did and what came of it]</div></div>
       <div class="block portal" data-solid data-room="room-projects"><span class="icon">→</span><h3>PROJECTS</h3><p>[One line] · bump to enter</p></div>
     </div>
-    <div class="row room" id="room-projects" data-title="PROJECTS">
+    <div class="row room" id="room-projects" data-title="PROJECTS" data-stage="3-2">
       <div class="block back nocoin" data-solid data-back><span class="icon">←</span><h3>BACK</h3></div>
       <div class="block" data-solid><h3>[PROJECT]</h3><p>[Short description]</p></div>
-      <a class="block link" data-solid href="#" target="_blank" rel="noopener"><span class="icon">↗</span><h3>[PROJECT]</h3><p>[link to code / paper]</p></a>
+      <a class="block link" data-solid href="#" target="_blank" rel="noopener"><span class="icon">↗</span><h3>[PROJECT]</h3><p>Open in new tab</p></a>
       <div class="block" data-solid><h3>[PROJECT]</h3><p>[Short description]</p></div>
     </div>
     <div class="string" data-chord="Fmaj9"></div>
@@ -277,7 +298,7 @@
 
   <!-- ============ 4. LEADERSHIP ============ -->
   <section id="leadership">
-    <div class="stage">4 · LEADERSHIP · CLOUD LAYER</div>
+    <div class="stage">4 · LEADERSHIP · STAGE <span class="stage-num">4-1</span></div>
     <h2>LEADERSHIP<span class="crumb"></span></h2>
     <div class="row">
       <div class="block expand" data-solid><span class="icon">＋</span><span class="when">[DATES]</span><h3>[ROLE]</h3><p>[Organization]</p>
@@ -291,7 +312,7 @@
 
   <!-- ============ 5. HOBBIES ============ -->
   <section id="hobbies">
-    <div class="stage">5 · HOBBIES · ALMOST HOME</div>
+    <div class="stage">5 · HOBBIES · STAGE <span class="stage-num">5-1</span></div>
     <h2>HOBBIES<span class="crumb"></span></h2>
     <div class="row">
       <div class="block portal" data-solid data-room="room-music"><span class="icon">→</span><h3>MUSIC PRODUCTION</h3><p>[One line] · bump to listen</p></div>
@@ -299,7 +320,7 @@
         <div class="more">[More about it]</div></div>
       <div class="block" data-solid><h3>[HOBBY]</h3><p>[One or two lines]</p></div>
     </div>
-    <div class="row room" id="room-music" data-title="MUSIC PRODUCTION">
+    <div class="row room" id="room-music" data-title="MUSIC PRODUCTION" data-stage="5-2">
       <div class="block back nocoin" data-solid data-back><span class="icon">←</span><h3>BACK</h3></div>
       <div class="block track" data-solid data-src="audio/song-1.mp3"><span class="icon">♪</span><h3>[SONG TITLE]</h3><p>[year · genre]</p><div class="prog"><i></i></div></div>
       <div class="block track" data-solid data-src="audio/song-2.mp3"><span class="icon">♪</span><h3>[SONG TITLE]</h3><p>[year · genre]</p><div class="prog"><i></i></div></div>
@@ -374,6 +395,33 @@
     }));
     frames[k] = c;
   }
+  // Battery form (toggled by the Battery Button)
+  // Battery form: a plain rectangular copper-top AA cell (no legs, no face)
+  const BAT_PAL = {S:'#c9d1db',O:'#0b0b10',C:'#c8742e',H:'#e8a05a',X:'#7a3e12',D:'#9c5520',K:'#26262b',G:'#44444c'};
+  const BAT = ['....SS....',
+               '.OOOOOOOO.',
+               '.OHCCCCCO.',
+               '.OHCCXCCO.',
+               '.OHCXXXCO.',
+               '.OHCCXCCO.',
+               '.OHCCCCCO.',
+               '.ODDDDDDO.',
+               '.OGKKKKKO.',
+               '.OGKKKKKO.',
+               '.OGKKKKKO.',
+               '.OGKKKKKO.',
+               '.OGKKKKKO.',
+               '.OOOOOOOO.'];
+  const batImg = document.createElement('canvas');
+  batImg.width = 10 * SCALE; batImg.height = 14 * SCALE;
+  { const x = batImg.getContext('2d');
+    BAT.forEach((r, j) => [...r].forEach((ch, i) => {
+      if (BAT_PAL[ch]) { x.fillStyle = BAT_PAL[ch]; x.fillRect(i * SCALE, j * SCALE, SCALE, SCALE); }
+    })); }
+  const batFrames = {};
+  for (const k in LEGS) batFrames[k] = batImg;          // same picture in every pose
+  const SKINS = { lucas: frames, battery: batFrames };
+  let skin = 'lucas';
   const SPR_W = 10 * SCALE, SPR_H = 14 * SCALE;
 
   // ================= PLAYER =================
@@ -483,6 +531,7 @@
   function activate(s) {           // E key / bump: use the box
     if (!s) return;
     const el = s.el;
+    if (el.dataset.sprite) toggleSkin(el.dataset.sprite);
     if (el.matches('.track')) toggleTrack(el);
     else if (el.matches('a[href]')) el.click();
     else if (el.matches('.expand')) toggleExpand(el);
@@ -490,13 +539,55 @@
     else if (el.hasAttribute('data-back')) exitRoom(el.closest('section'));
   }
 
-  // ＋ boxes: one open at a time; it closes again when you walk away
+  function toggleSkin(name) {
+    skin = skin === name ? 'lucas' : name;
+    playChord({ notes: skin === 'battery' ? [60, 64, 67, 72, 76] : [76, 72, 67, 64, 60], voices: [] }, 0.35, 0, 0.04);
+  }
+
+  // ＋ boxes: the panel opens in a slot above the box's row (in the page flow, so it never
+  // overlaps the strings or other content). One open at a time; it closes when you walk away.
   let openBox = null;
+  document.querySelectorAll('.row').forEach(row => {
+    if (!row.querySelector('.expand')) return;
+    const slot = document.createElement('div'); slot.className = 'panel-slot';
+    row.parentNode.insertBefore(slot, row);
+  });
+  // Opening/closing a panel moves the row (and everything below it). Move the character and the
+  // view by the same amount so the row stays put on screen and the panel seems to grow upward.
+  function keepRowInPlace(row, change) {
+    const before = row.getBoundingClientRect().top;
+    change();
+    const delta = row.getBoundingClientRect().top - before;
+    if (delta && gameOn) {
+      p.y += delta;
+      camY += delta; scrollTo(scrollX, scrollY + delta);
+    }
+    readWorld();
+  }
+  function closePanel() {
+    if (!openBox) return;
+    const box = openBox, row = box.closest('.row'), slot = row.previousElementSibling;
+    openBox = null;
+    keepRowInPlace(row, () => {
+      box.classList.remove('open');
+      if (slot && slot.classList.contains('panel-slot')) { slot.classList.remove('show'); slot.innerHTML = ''; }
+    });
+  }
   function toggleExpand(el) {
     const was = el.classList.contains('open');
-    if (openBox) openBox.classList.remove('open');
-    openBox = was ? null : el;
-    if (!was) { el.classList.add('open'); playChord({ notes: [72, 79], voices: [] }, 0.2, 0, 0.05); }
+    closePanel();
+    if (was) return;
+    const slot = el.closest('.row').previousElementSibling, more = el.querySelector('.more');
+    if (!slot || !slot.classList.contains('panel-slot') || !more) return;
+    const title = (el.querySelector('h3') || {}).textContent || '';
+    const long = more.querySelectorAll('li').length > 3;          // lists spread into two columns; paragraphs stay whole
+    keepRowInPlace(el.closest('.row'), () => {
+      slot.innerHTML = `<div class="panel"><h4>${title}</h4><div class="cols${long ? ' multi' : ''}">${more.innerHTML}</div></div>`;
+      slot.classList.add('show'); el.classList.add('open'); openBox = el;
+      const er = el.getBoundingClientRect(), sr = slot.getBoundingClientRect();
+      slot.style.setProperty('--ax', (er.left + er.width / 2 - sr.left) + 'px');
+    });
+    playChord({ notes: [72, 79], voices: [] }, 0.2, 0, 0.05);
   }
 
   // → boxes: a quick pixel wipe, then the section's row is swapped for the room's row
@@ -508,7 +599,14 @@
       sec.querySelectorAll('.room').forEach(r => r.style.display = '');
       const crumb = sec.querySelector('.crumb');
       if (crumb) crumb.textContent = entering ? ' › ' + (room.dataset.title || '') : '';
-      if (openBox) { openBox.classList.remove('open'); openBox = null; }
+      const num = sec.querySelector('.stage-num');
+      if (num) {                                   // main area = X-1, rooms = X-2, X-3, …
+        const major = num.dataset.base || (num.dataset.base = num.textContent);
+        const idx = entering ? [...sec.querySelectorAll('.room')].indexOf(room) + 2 : 1;
+        num.textContent = major.split('-')[0] + '-' + idx;
+        num.classList.remove('flash'); void num.offsetWidth; num.classList.add('flash');
+      }
+      closePanel();
       if (!entering && currentTrack) currentTrack._audio.pause();
       if (entering) sec.querySelectorAll('.room').forEach(r => { if (r !== room) r.style.display = 'none'; });
       readWorld();
@@ -791,7 +889,7 @@
     }
     if (openBox) {
       const r = openBox.getBoundingClientRect(), bl = r.left + scrollX, br = r.right + scrollX;
-      if (pcx < bl - 160 || pcx > br + 160 || feet < r.bottom + scrollY - 40 || feet > r.bottom + scrollY + 260) { openBox.classList.remove('open'); openBox = null; }
+      if (pcx < bl - 160 || pcx > br + 160 || feet < r.bottom + scrollY - 40 || feet > r.bottom + scrollY + 260) closePanel();
     }
     // usable box within reach overhead → E prompt
     active = null;
@@ -997,8 +1095,9 @@
     const sag = p.on ? 5 : 0;
     const dx = Math.round(p.x - ox - (SPR_W - p.w) / 2), dy = Math.round(p.y - oy + sag);
     ctx.save();
-    if (p.face < 0) { ctx.translate(dx + SPR_W, dy); ctx.scale(-1, 1); ctx.drawImage(frames[f], 0, 0); }
-    else ctx.drawImage(frames[f], dx, dy);
+    const spr = SKINS[skin][f];
+    if (p.face < 0) { ctx.translate(dx + SPR_W, dy); ctx.scale(-1, 1); ctx.drawImage(spr, 0, 0); }
+    else ctx.drawImage(spr, dx, dy);
     ctx.restore();
     if (active) {                                        // "E" prompt
       const el = active.el;
@@ -1093,9 +1192,10 @@
     for (const k in keys) keys[k] = 0;
     document.querySelectorAll('section.in-room').forEach(sec => {
       sec.classList.remove('in-room'); const c = sec.querySelector('.crumb'); if (c) c.textContent = '';
+      const n = sec.querySelector('.stage-num'); if (n && n.dataset.base) n.textContent = n.dataset.base;
       sec.querySelectorAll('.room').forEach(r => r.style.display = '');
     });
-    if (openBox) { openBox.classList.remove('open'); openBox = null; }
+    closePanel();
     readWorld(); buildScenery();
     if (!gameOn) scrollTo(0, scrollY);
     else { spawn(); camY = scrollY; camV = 0; camX = scrollX; camXV = 0; }
