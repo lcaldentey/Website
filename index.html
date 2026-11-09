@@ -117,6 +117,8 @@
   .flag{display:inline-block;width:27px;height:18px;vertical-align:-3px;margin:0 3px;box-shadow:0 0 0 2px #1a1c2c}
   .flags{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
   .block .logo{float:left;height:64px;width:auto;margin:0 14px 4px 0;image-rendering:auto}
+  /* wide wordmark logos (Yip Lab, Anton Paar) sit on their own line, on a small white badge */
+  .block .logo.wide{float:none;display:block;height:34px;max-width:100%;object-fit:contain;object-position:left;margin:0 0 10px;box-shadow:2px 2px 0 #000}
   .flag-row{display:flex;gap:12px;margin:2px 0 12px}
   .flag-row .flag{width:42px;height:28px;margin:0}
   /* → boxes: bump to enter a room with more boxes; ← BACK returns */
@@ -259,6 +261,7 @@
     opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap}
   .toast.show{opacity:1}
   .lab-link{margin:10px 0 0}
+  .block p.doi{margin-top:8px;font-size:18px;color:var(--dim)}
   /* first visit / reload: the character waits in orbit until the first key or click,
      because browsers only allow sound after the visitor interacts with the page */
   .start-hint{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:66;width:min(600px,calc(100vw - 32px));
@@ -312,6 +315,7 @@
   body.classic .block h3{font-size:11px}
   body.classic .block .more{font-size:20px;line-height:1.32;color:#d3e1ec;padding-top:10px;margin-top:10px;border-top:2px dashed rgba(169,191,208,.25)}
   body.classic .block .logo{height:52px}
+  body.classic .block .logo.wide{height:34px}
   body.classic .room{margin-top:6px}
   body.classic .room::before{grid-column:1/-1;margin:6px 0 -6px;color:#a7f070}
   body.classic .room.secret::before{color:#ffe08a}
@@ -428,11 +432,11 @@
     <div class="stage">3 · EXPERIENCE · STAGE <span class="stage-num">3-1</span></div>
     <h2>EXPERIENCE<span class="crumb"></span></h2>
     <div class="row five tall">
-      <div class="block expand" data-solid><span class="icon">＋</span><span class="when">2025 – PRESENT</span><h3>UNDERGRADUATE RESEARCHER</h3><p>Yip Lab · Columbia</p>
+      <div class="block expand" data-solid><span class="icon">＋</span><img class="logo wide" src="images/yiplab-logo.png" alt="Yip Lab" onerror="this.remove()"><span class="when">2025 – PRESENT</span><h3>COLUMBIA RESEARCH FELLOW</h3><p>Yip Lab · Columbia</p>
         <div class="more"><ul><li>I currently work with the Yip Lab at Columbia to investigate techniques in critical mineral extraction and recovery. As our demand for materials like Lithium, Nickel, and Cobalt skyrocket, it is important to look towards alternative and systematic methods of extracting them in a safe and renewable manner. My work currently consists of analyzing the influences of steric variation on ion mobility, and on examining effective Lithium 6-7 separation.</li></ul><p class="lab-link"><a href="https://yiplab-h2o-e-env.eee.columbia.edu/" target="_blank" rel="noopener">Visit the Yip Lab website ↗</a></p></div></div>
       <div class="block expand" data-solid><span class="icon">＋</span><img class="logo" src="images/sqm-logo.png" alt="SQM" onerror="this.remove()"><span class="when">AUG 2025 – MAY 2026</span><h3>PROCESS ENGINEERING INTERN</h3><p>SQM · Chile</p>
         <div class="more"><ul><li>Developed physics-informed neural networks (PINNs) to model sulfur-combustion dynamics at the Santa Victoria plant.</li><li>Derived and solved reaction-dynamic PDEs to embed physical constraints into a neural-network model for process prediction and optimization.</li><li>Combined thermodynamics, numerical methods and machine learning into a scalable process-modeling tool for industrial simulation.</li></ul></div></div>
-      <div class="block expand" data-solid><span class="icon">＋</span><span class="when">JUN – AUG 2025</span><h3>BATTERY R&amp;D INTERN</h3><p>Anton Paar · Austria</p>
+      <div class="block expand" data-solid><span class="icon">＋</span><img class="logo wide" src="images/antonpaar-logo.png" alt="Anton Paar" onerror="this.remove()"><span class="when">JUN – AUG 2025</span><h3>BATTERY R&amp;D INTERN</h3><p>Anton Paar · Austria</p>
         <div class="more"><ul><li>Characterized battery-slurry rheology, thixotropy and powder-compression conductivity to support battery-manufacturing process optimization.</li><li>Developed Python scripts for department-wide data analysis and optimization.</li><li>Supported calibration and precision testing of the MCR 502 rheometer for commercial product release.</li></ul></div></div>
       <div class="block expand" data-solid><span class="icon">＋</span><span class="when">2022 – 2024</span><h3>LEAD STUDENT RESEARCHER</h3><p>Argonne National Lab</p>
         <div class="more"><ul><li>Led a four-person team investigating lithium-vanadium battery-anode performance through Argonne's Exemplary Student Research Program.</li><li>Designed, built and tested battery cells with Prof. Segre's group, using the Center for Nanoscale Materials and the Advanced Photon Source.</li><li>Analyzed the results and presented findings at Argonne's annual research conference.</li></ul></div></div>
@@ -450,7 +454,7 @@
     </div>
     <div class="row room" id="room-pubs" data-title="PUBLICATIONS" data-stage="3-3">
       <div class="block back nocoin" data-solid data-back><span class="icon">←</span><h3>BACK</h3></div>
-      <a class="block link" data-solid href="https://doi.org/10.2139/ssrn.4525930" target="_blank" rel="noopener" style="flex-basis:420px"><span class="icon">↗</span><span class="when">2024</span><h3>URBAN POPULATION SCALING AND CO₂ EMISSIONS</h3><p><i>Intersect: The Stanford Journal of Science, Technology, and Society</i>, 18(1)</p></a>
+      <a class="block link" data-solid href="https://ojs.stanford.edu/ojs/index.php/intersect/article/view/2830" target="_blank" rel="noopener" style="flex-basis:420px"><span class="icon">↗</span><span class="when">2024</span><h3>URBAN POPULATION SCALING AND CO₂ EMISSIONS</h3><p><i>Intersect: The Stanford Journal of Science, Technology, and Society</i>, 18(1)</p><p class="doi">DOI: 10.2139/ssrn.4525930</p></a>
       <div class="block expand" data-solid style="flex-basis:420px"><span class="icon">＋</span><span class="when">2023</span><h3>SAIFETY: AUDIO PROTECTION &amp; ETHICAL DATA COLLECTION IN TXT2VID</h3><p>Stanford Compression Forum</p>
         <div class="more">Caldentey, L., Altmann, A., Xiao, Y. L., &amp; Geleta, F. (2023). <i>SaiFETY: An Integration of Audio Protection and Ethical Data Collection Comparisons Within Txt2Vid.</i> Stanford Compression Forum, STEM to SHTEM Program.</div></div>
     </div>
