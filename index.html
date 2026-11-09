@@ -63,10 +63,10 @@
        font-family:'Press Start 2P',monospace;font-size:11px;box-shadow:var(--px) var(--px) 0 #000}
 
   .hero{display:flex;justify-content:space-between;gap:4vw;align-items:flex-start}
-  .photo{flex:0 0 auto;width:220px;height:240px;border:var(--px) dashed var(--edge);display:flex;flex-direction:column;
-    align-items:center;justify-content:center;color:var(--dim);font-family:'Press Start 2P',monospace;font-size:11px;
-    text-align:center;gap:10px;background:rgba(42,49,80,.45)}
-  .photo small{font-family:'VT323',monospace;font-size:18px}
+  .photo{flex:0 0 auto;width:220px;height:290px;object-fit:cover;object-position:60% 30%;display:block;
+    border:var(--px) solid var(--gold);box-shadow:var(--px) var(--px) 0 var(--accent),calc(var(--px)*2) calc(var(--px)*2) 0 #000;
+    background:var(--block)}
+  @media (max-width:700px){ .hero{flex-direction:column-reverse} .photo{width:160px;height:210px} }
 
   /* Row of boxes hanging at jump height above the string */
   .row{display:flex;gap:4vw;align-items:flex-end;margin:0 0 100px}
@@ -128,6 +128,14 @@
   section.in-room > .room{display:flex}
   .crumb{color:#a7f070}
   .room.secret > .block:not(.back){border-color:#ffe08a}
+  /* ★ El Camino: a separate space one screen to the LEFT of Experience (same height as its boxes) */
+  .camino{position:absolute;left:-100vw;width:calc(100vw - 2 * var(--side));bottom:190px}
+  .camino .row{margin:0}
+  .camino .stage,.camino h2{color:#ffe08a}
+  .camino .block{border-color:#ffe08a}
+  section.in-room > .camino{display:none}
+  body.classic .camino{position:static;width:auto;margin:30px 0 0}
+  body.classic .camino .row{margin:0 0 26px}
   .stage-num.sub{color:#a7f070}
   .stage-num.flash{animation:flash .5s steps(2) 2}
   @keyframes flash{50%{color:#fff}}
@@ -343,7 +351,7 @@
         swimming laps around the pool, or watching a David Fincher film, you'll probably find me tackling one of the world's most pressing issues: climate change and our fight towards
         a cleaner, more sustainable world. Please feel free to look around!</p>
       </div>
-      <div class="photo">[ PHOTO ]<small>background item —<br>not solid</small></div>
+      <img class="photo" src="images/headshot.jpg" alt="Lucas Caldentey" width="220" height="290">
     </div>
     <div class="row">
       <div class="block expand" data-solid><span class="icon">＋</span><h3>ABOUT ME</h3>
@@ -381,7 +389,7 @@
     <h2>EXPERIENCE<span class="crumb"></span></h2>
     <div class="row five tall">
       <div class="block expand" data-solid><span class="icon">＋</span><span class="when">2025 – PRESENT</span><h3>UNDERGRADUATE RESEARCHER</h3><p>Yip Lab · Columbia</p>
-        <div class="more"><ul><li>I currently work with the Yip Lab at Columbia to investigate techniques in critical mineral extraction and recovery. As our demand for materials like Lithium, Nickel, and Cobalt skyrocket, it is important to look towards alternative and systematic methods of extracting them in a safe and renewable manner. My work currently consists of analyzing the influences of steric variation on ion mobility, and on examining effective Lithium 6-7 seperation. </li><p class="lab-link"><a href="https://yiplab-h2o-e-env.eee.columbia.edu/" target="_blank" rel="noopener">Visit the Yip Lab website ↗</a></p></div></div>
+        <div class="more"><ul><li>I currently work with the Yip Lab at Columbia to investigate techniques in critical mineral extraction and recovery. As our demand for materials like Lithium, Nickel, and Cobalt skyrocket, it is important to look towards alternative and systematic methods of extracting them in a safe and renewable manner. My work currently consists of analyzing the influences of steric variation on ion mobility, and on examining effective Lithium 6-7 separation.</li></ul><p class="lab-link"><a href="https://yiplab-h2o-e-env.eee.columbia.edu/" target="_blank" rel="noopener">Visit the Yip Lab website ↗</a></p></div></div>
       <div class="block expand" data-solid><span class="icon">＋</span><span class="when">AUG 2025 – MAY 2026</span><h3>PROCESS ENGINEERING INTERN</h3><p>SQM · Chile</p>
         <div class="more"><ul><li>Developed physics-informed neural networks (PINNs) to model sulfur-combustion dynamics at the Santa Victoria plant.</li><li>Derived and solved reaction-dynamic PDEs to embed physical constraints into a neural-network model for process prediction and optimization.</li><li>Combined thermodynamics, numerical methods and machine learning into a scalable process-modeling tool for industrial simulation.</li></ul></div></div>
       <div class="block expand" data-solid><span class="icon">＋</span><span class="when">JUN – AUG 2025</span><h3>BATTERY R&amp;D INTERN</h3><p>Anton Paar · Austria</p>
@@ -389,9 +397,9 @@
       <div class="block expand" data-solid><span class="icon">＋</span><span class="when">2022 – 2024</span><h3>LEAD STUDENT RESEARCHER</h3><p>Argonne National Lab</p>
         <div class="more"><ul><li>Led a four-person team investigating lithium-vanadium battery-anode performance through Argonne's Exemplary Student Research Program.</li><li>Designed, built and tested battery cells with Prof. Segre's group, using the Center for Nanoscale Materials and the Advanced Photon Source.</li><li>Analyzed the results and presented findings at Argonne's annual research conference.</li></ul></div></div>
       <div class="stack">
-        <div class="block portal upper" data-solid data-room="room-pubs"><span class="icon">→</span><h3>PUBLICATIONS</h3><p>2 papers · bump to enter</p></div>
+        <div class="block portal upper" data-solid data-room="room-pubs"><span class="icon">→</span><h3>PUBLICATIONS</h3></div>
         <div class="ladder" aria-hidden="true"></div>
-        <div class="block portal" data-solid data-room="room-projects"><span class="icon">→</span><h3>PROJECTS</h3><p>[One line] · bump to enter</p></div>
+        <div class="block portal" data-solid data-room="room-projects"><span class="icon">→</span><h3>PROJECTS</h3></div>
       </div>
     </div>
     <div class="row room" id="room-projects" data-title="PROJECTS" data-stage="3-2">
@@ -406,14 +414,19 @@
       <div class="block expand" data-solid style="flex-basis:420px"><span class="icon">＋</span><span class="when">2023</span><h3>SAIFETY: AUDIO PROTECTION &amp; ETHICAL DATA COLLECTION IN TXT2VID</h3><p>Stanford Compression Forum</p>
         <div class="more">Caldentey, L., Altmann, A., Xiao, Y. L., &amp; Geleta, F. (2023). <i>SaiFETY: An Integration of Audio Protection and Ethical Data Collection Comparisons Within Txt2Vid.</i> Stanford Compression Forum, STEM to SHTEM Program.</div></div>
     </div>
-    <div class="row room secret" id="room-camino" data-title="★ SECRET · EL CAMINO DE SANTIAGO" data-stage="3-★" data-enter="left">
-      <div class="block back nocoin" data-solid data-back><span class="icon">←</span><h3>BACK</h3></div>
+    <!-- ★ SECRET: El Camino de Santiago — its own space one screen to the LEFT of Experience.
+         In the game you walk past the left wall of the Experience string and the view slides over. -->
+    <div class="camino" id="camino">
+      <div class="stage">SECRET · STAGE 3-0</div>
+      <h2>EL CAMINO DE SANTIAGO</h2>
+      <div class="row">
       <div class="block expand" data-solid style="flex-basis:360px"><span class="icon">＋</span><h3>EL CAMINO DE SANTIAGO</h3><p>A pilgrimage I've walked twice</p>
         <div class="more">The Camino de Santiago is a centuries-old network of pilgrimage routes that end at the cathedral of Santiago de Compostela, in Galicia, Spain. I have completed it twice, and both times were among the most profound and impactful experiences of my life. [Add what it meant to you, in your own words.]</div></div>
       <div class="block expand" data-solid><span class="icon">＋</span><span class="when">[YEAR]</span><h3>FIRST CAMINO</h3><p>[Route · distance]</p>
         <div class="more">[Where you started, how long it took, and a moment that stayed with you.]</div></div>
       <div class="block expand" data-solid><span class="icon">＋</span><span class="when">[YEAR]</span><h3>SECOND CAMINO</h3><p>[Route · distance]</p>
         <div class="more">[What was different the second time.]</div></div>
+      </div>
     </div>
     <div class="string" data-chord="Fmaj9" data-note="The IV chord: warm and spacious. In a progression the IV is where things start to lift and move forward, like building real-world experience."></div>
   </section>
@@ -423,12 +436,12 @@
     <div class="stage">4 · LEADERSHIP · STAGE <span class="stage-num">4-1</span></div>
     <h2>LEADERSHIP<span class="crumb"></span></h2>
     <div class="row">
-      <div class="block expand" data-solid style="flex-basis:340px"><span class="icon">＋</span><span class="when">2026 – PRESENT</span><h3>PRESIDENT</h3><p>Columbia University Sustainable Energy (CUSE)</p>
+      <div class="block expand" data-solid style="flex-basis:340px"><span class="icon">＋</span><img class="logo" src="images/cuse-logo.png" alt="CUSE" onerror="this.remove()"><span class="when">2026 – PRESENT</span><h3>PRESIDENT</h3><p>Columbia University Sustainable Energy (CUSE)</p>
         <div class="more"><ul><li>Lead a 40+ member student organization focused on renewable-energy technology, competitions and campus sustainability projects.</li><li>Oversee and lead the team in national competition entries, including the U.S. Department of Energy Solar District Cup.</li></ul></div></div>
       <div class="block q" data-solid><span class="qmark">?</span><h3>SOLAR DISTRICT CUP</h3><p class="detail">1st Place · 2025 season — U.S. Department of Energy competition, with the CUSE team.</p></div>
       <div class="block expand" data-solid><span class="icon">＋</span><h3>CAMPUS SOLAR</h3><p>Columbia's first on-campus panels</p>
         <div class="more">Managing an initiative with Columbia Facilities to install the university's first-ever on-campus solar panel system.</div></div>
-      <div class="block portal" data-solid data-room="room-skills"><span class="icon">→</span><h3>SKILLS</h3><p>Lab, modeling &amp; software · bump to enter</p></div>
+      <div class="block portal" data-solid data-room="room-skills"><span class="icon">→</span><h3>SKILLS</h3><p>Lab, modeling &amp; software</p></div>
     </div>
     <div class="row room" id="room-skills" data-title="SKILLS" data-stage="4-2">
       <div class="block back nocoin" data-solid data-back><span class="icon">←</span><h3>BACK</h3></div>
@@ -449,7 +462,7 @@
     <div class="stage">5 · HOBBIES · STAGE <span class="stage-num">5-1</span></div>
     <h2>HOBBIES<span class="crumb"></span></h2>
     <div class="row">
-      <div class="block portal" data-solid data-room="room-music"><span class="icon">→</span><h3>MUSIC PRODUCTION</h3><p>Piano &amp; my songs · bump to listen</p></div>
+      <div class="block portal" data-solid data-room="room-music"><span class="icon">→</span><h3>MUSIC PRODUCTION</h3><p>Piano &amp; my songs</p></div>
       <div class="block" data-solid><h3>SWIMMING</h3><p>Laps around the pool</p></div>
       <div class="block" data-solid><h3>FILM</h3><p>Probably watching another David Fincher film</p></div>
     </div>
@@ -459,15 +472,6 @@
       <div class="block track" data-solid data-src="audio/song-2.mp3"><span class="icon">♪</span><h3>[SONG TITLE]</h3><p>[year · genre]</p><div class="prog"><i></i></div></div>
       <div class="block track" data-solid data-src="audio/song-3.mp3"><span class="icon">♪</span><h3>[SONG TITLE]</h3><p>[year · genre]</p><div class="prog"><i></i></div></div>
       <a class="block link" data-solid href="#" target="_blank" rel="noopener"><span class="icon">↗</span><h3>MORE MUSIC</h3><p>[SoundCloud / Spotify]</p></a>
-    </div>
-    <div class="row room secret" id="room-poetry" data-title="★ SECRET · POETRY" data-stage="5-★">
-      <div class="block back nocoin" data-solid data-back><span class="icon">←</span><h3>BACK</h3></div>
-      <div class="block expand" data-solid><span class="icon">＋</span><h3>WHY POETRY</h3><p>[One line]</p>
-        <div class="more">[Why poetry matters to you and when you started writing or reading it.]</div></div>
-      <div class="block expand" data-solid><span class="icon">＋</span><h3>POETS I LOVE</h3><p>[A few names]</p>
-        <div class="more">[The poets or poems that shaped you, and why.]</div></div>
-      <div class="block expand" data-solid><span class="icon">＋</span><h3>A POEM OF MINE</h3><p>[Title]</p>
-        <div class="more">[One of your own poems.]</div></div>
     </div>
     <div class="string" data-chord="Cadd9" data-note="Home again (I), voiced low and wide. The I–vi–IV–V–I loop resolves here, right as you land by the house."></div>
   </section>
@@ -592,12 +596,22 @@
   }
 
   // ================= WORLD (read from the DOM) =================
-  let solids = [], strings = [], sections = [], spots = [], inter = [], ladders = [];
+  let solids = [], strings = [], sections = [], spots = [], inter = [], ladders = [], camino = null;
   let gate, thanks, basement, ground, skyStops = [];
   const $ = id => document.getElementById(id);
+  // The view can sit LEFT of the page's left edge (the Camino space). The browser can't scroll there,
+  // so instead the page is slid right by shiftX. viewX() is the world x at the screen's left edge.
+  let shiftX = 0;
+  const worldEls = [document.querySelector('main'), $('basement')];
+  const viewX = () => scrollX - shiftX;
+  function setView(x, y) {
+    const sx = Math.max(0, x), sh = Math.round(Math.max(0, -x));
+    if (sh !== shiftX) { shiftX = sh; worldEls.forEach(el => el.style.transform = sh ? `translateX(${sh}px)` : ''); }
+    if (Math.abs(sx - scrollX) > 0.5 || Math.abs(y - scrollY) > 0.5) scrollTo(sx, y);
+  }
   const pageRect = el => {
-    const r = el.getBoundingClientRect();
-    return { l: r.left + scrollX, t: r.top + scrollY, r: r.right + scrollX, b: r.bottom + scrollY };
+    const r = el.getBoundingClientRect(), vx = viewX();
+    return { l: r.left + vx, t: r.top + scrollY, r: r.right + vx, b: r.bottom + scrollY };
   };
   function readWorld() {
     const W = VW();
@@ -607,6 +621,12 @@
     ladders = [...document.querySelectorAll('.ladder')].map(el => ({ el, ...pageRect(el) })).filter(l => l.r - l.l > 1);
     inter = solids.filter(s => s.el.matches('.link, .track, .expand, [data-room], [data-back]'));
     sections = [...document.querySelectorAll('main > section')].map(el => ({ el, ...pageRect(el) }));
+    camino = null;                                   // the secret space left of its section (game mode only)
+    const cEl = $('camino');
+    if (cEl && gameOn) {
+      const r = pageRect(cEl), k = sections.findIndex(s => s.el.contains(cEl));
+      if (r.r - r.l > 1 && k >= 0) camino = { el: cEl, k, ...r, left: Math.round(r.l - sections[k].l) };
+    }
     const old = strings;
     strings = sections.map((sec, i) => {
       const el = sec.el.querySelector('.string'), r = pageRect(el), prev = old[i];
@@ -615,7 +635,8 @@
       const right = er ? er.r + W * 0.06 : W;
       const chord = el.dataset.chord in CHORDS ? el.dataset.chord : 'Cmaj9';
       const note = el.dataset.note || '';
-      return { el, i, l: 0, r: right, L: right, y: (r.t + r.b) / 2, secTop: sec.t, wings, note,
+      const left = camino && camino.k === i ? camino.left : 0;      // the Experience string runs on into the Camino
+      return { el, i, l: left, r: right, L: right - left, y: (r.t + r.b) / 2, secTop: sec.t, wings, note,
                chord, notes: CHORDS[chord], plucks: prev ? prev.plucks : [], voices: prev ? prev.voices : [] };
     });
     spots = [...document.querySelectorAll('.coin-spot')].map(el => { const r = pageRect(el); return { el, x: (r.l + r.r) / 2, y: (r.t + r.b) / 2 }; });
@@ -636,6 +657,8 @@
     const k = zoneIndex(feet);
     return k >= 0 ? strings[k].r : VW();
   }
+  // left limit: 0 everywhere, except the Experience zone, which continues into the Camino space
+  const zoneLeft = feet => (camino && !inBasement(feet) && zoneIndex(feet) === camino.k) ? camino.left : 0;
 
   // ================= COINS / EVENTS =================
   const coinN = $('coinN'), coinT = $('coinT'), coinsEl = $('coins');
@@ -997,7 +1020,7 @@
       b.push(2 * h * L * L * Math.sin(n * Math.PI * x0 / L) / (Math.PI ** 2 * n * n * x0 * (L - x0)));
     s.plucks.push({ t0: now, b });
     if (s.plucks.length > 6) s.plucks.shift();
-    if (!silent) { playChord(s, strength, ((xPage - scrollX) / VW()) * 2 - 1); lastSounded = s; }
+    if (!silent) { playChord(s, strength, clamp(((xPage - viewX()) / VW()) * 2 - 1, -1, 1)); lastSounded = s; }
   }
   function stringY(s, x) {
     let y = 0;
@@ -1028,7 +1051,11 @@
       if (!p.onGround) p.x += (bound - 12 - p.x) * Math.min(1, 9 * DT);
       else p.x = bound;
     }
-    p.x = Math.max(0, p.x);
+    const lb = zoneLeft(p.y + p.h);
+    if (p.x < lb) {                    // same on the left, e.g. dropping out of the Camino into Leadership
+      if (!p.onGround) p.x += (lb + 12 - p.x) * Math.min(1, 9 * DT);
+      else p.x = lb;
+    }
   }
   function moveY(dy) {
     const prevBottom = p.y + p.h;
@@ -1139,7 +1166,7 @@
       c.el.dataset.taken = '1'; addCoin(c.x, c.y);
     }
     if (openBox) {
-      const r = openBox.getBoundingClientRect(), bl = r.left + scrollX, br = r.right + scrollX;
+      const r = openBox.getBoundingClientRect(), bl = r.left + viewX(), br = r.right + viewX();
       if (pcx < bl - 160 || pcx > br + 160 || feet < r.bottom + scrollY - 40 || feet > r.bottom + scrollY + 260) closePanel();
     }
     // usable box within reach overhead → E prompt
@@ -1241,7 +1268,7 @@
   }
 
   function drawBackground() {
-    const W = innerWidth, H = innerHeight, ox = scrollX, oy = scrollY, g = bgx;
+    const W = innerWidth, H = innerHeight, ox = viewX(), oy = scrollY, g = bgx;
     // sky: color by altitude, in 8px bands
     for (let y = 0; y < H; y += 8) { g.fillStyle = lerpColor(oy + y); g.fillRect(0, y, W, 8); }
     // stars (fade out as the air gets thicker)
@@ -1318,7 +1345,7 @@
   }
   function draw() {
     ctx.clearRect(0, 0, innerWidth, innerHeight);
-    const oy = scrollY, ox = scrollX, W = innerWidth;
+    const oy = scrollY, ox = viewX(), W = innerWidth;
     for (const s of strings) {
       const sy = s.y - oy; if (sy < -60 || sy > innerHeight + 60) continue;
       ctx.fillStyle = '#ffcd75';
@@ -1398,71 +1425,29 @@
   }
 
   // ================= SECRETS =================
-  // 1) Walk off the LEFT edge of a section that has a room with data-enter="left" (Experience → Camino).
-  // 2) Touch the blue-outlined cloud drifting through Hobbies → Poetry.
-  let leftPush = 0;
+  // El Camino: walk past the LEFT wall of the Experience string. The view slides over to a separate
+  // space one screen to the left (see camTargetX); the first visit shows a "secret found" toast.
   const foundSecrets = new Set();
-  function secretToast(room) {
-    if (foundSecrets.has(room.id)) return;
-    foundSecrets.add(room.id); toast('★ SECRET FOUND! ★');
+  function secretToast(el) {
+    if (foundSecrets.has(el.id)) return;
+    foundSecrets.add(el.id); toast('★ SECRET FOUND! ★');
     playChord({ notes: [72, 76, 79, 84], voices: [] }, 0.35, 0.8, 0.07);
   }
+  const inCamino = () => camino && p.x + p.w / 2 < 0 && zoneIndex(p.y + p.h) === camino.k && !inBasement(p.y + p.h);
   function checkSecrets() {
-    if (wipe || !p.on) { leftPush = 0; return; }
-    const sec = sections[p.on.i] && sections[p.on.i].el;
-    if (!sec || sec.classList.contains('in-room')) { leftPush = 0; return; }
-    const room = sec.querySelector('.room[data-enter="left"]');
-    if (room && keys.left && p.x <= 1) {
-      leftPush += DT;
-      if (leftPush > 0.18) { leftPush = 0; secretToast(room); enterRoom(sec, room); }
-    } else leftPush = 0;
-  }
-  const blueCloud = { x: -200, k: 4, room: 'room-poetry', w: 132, h: 44, img: null };
-  function makeBlueCloud() {
-    const c = document.createElement('canvas'); c.width = blueCloud.w; c.height = blueCloud.h;
-    const g = c.getContext('2d'), blobs = [[30, 28, 16], [56, 20, 20], [84, 22, 18], [106, 29, 14]];
-    const inside = (x, y) => blobs.some(([bx, by, r]) => Math.hypot(x - bx, (y - by) * 1.2) < r) && y < 40;
-    for (let y = 0; y < c.height; y += 4) for (let x = 0; x < c.width; x += 4) {
-      if (!inside(x + 2, y + 2)) continue;
-      const edge = !inside(x - 2, y + 2) || !inside(x + 6, y + 2) || !inside(x + 2, y - 2) || !inside(x + 2, y + 6);
-      g.fillStyle = edge ? '#41a6f6' : (y > 28 ? '#d8e8f6' : '#f6faff'); g.fillRect(x, y, 4, 4);
-    }
-    blueCloud.img = c;
-  }
-  makeBlueCloud();
-  function blueCloudRect() {
-    const s = strings[blueCloud.k], sec = sections[blueCloud.k];
-    if (!s || !sec || sec.el.classList.contains('in-room')) return null;
-    return { l: blueCloud.x, t: s.y - 132, r: blueCloud.x + blueCloud.w, b: s.y - 88 };
-  }
-  function updateBlueCloud(dt) {
-    blueCloud.x += 55 * dt;
-    if (blueCloud.x > VW() + 60) blueCloud.x = -blueCloud.w - 60;
-    const r = blueCloudRect();
-    if (!r || wipe || !gameOn) return;
-    const hit = p.x < r.r - 18 && p.x + p.w > r.l + 18 && p.y < r.b - 8 && p.y + p.h > r.t + 8;
-    if (hit) {
-      const sec = sections[blueCloud.k].el, room = document.getElementById(blueCloud.room);
-      if (room) { secretToast(room); enterRoom(sec, room); }
-    }
+    if (inCamino()) secretToast(camino.el);
   }
   function drawSecretHints() {
-    const ox = scrollX, oy = scrollY;
-    const r = blueCloudRect();
-    if (r && blueCloud.img) {
-      const bob = Math.sin(now * 2) > 0 ? -2 : 0;
-      ctx.drawImage(blueCloud.img, Math.round(r.l - ox), Math.round(r.t - oy + bob));
-    }
-    // a yellow Camino arrow at the left end of the Experience string
-    sections.forEach((sec, i) => {
-      if (!sec.el.querySelector('.room[data-enter="left"]') || sec.el.classList.contains('in-room')) return;
-      const s = strings[i], x = 20 - ox, y = s.y - 58 - oy + (Math.sin(now * 3) > 0 ? -2 : 0);
+    const ox = viewX(), oy = scrollY;
+    // a yellow Camino arrow at the left wall of the Experience string, pointing the way
+    if (camino) {
+      const s = strings[camino.k], x = 20 - ox, y = s.y - 58 - oy + (Math.sin(now * 3) > 0 ? -2 : 0);
       if (y < -40 || y > innerHeight + 40) return;
       ctx.fillStyle = '#1a1c2c'; ctx.fillRect(x - 2, y - 2, 34, 22);
       ctx.fillStyle = '#ffe14d';
       ctx.fillRect(x + 12, y + 6, 18, 6);                                  // shaft
       for (let k = 0; k < 4; k++) ctx.fillRect(x + 2 + k * 3, y + 9 - k * 2 - 1, 3, 2 + k * 4);   // head
-    });
+    }
   }
 
   // ================= CHORD DESCRIPTIONS =================
@@ -1502,6 +1487,7 @@
   }
   function camTargetX() {          // follow to the right once past mid-screen, where there is more to see
     const W = VW(), maxX = Math.max(0, zoneRight(p.y + p.h) - W);
+    if (inCamino()) return camino.left;           // past the left wall: slide over to show the whole Camino space
     return clamp(p.x + p.w / 2 - W * 0.5, 0, maxX);
   }
   function damp(cur, vel, target, smooth, dt) {
@@ -1510,10 +1496,10 @@
     return [target + (change + temp) * e, (vel - w * temp) * e];
   }
   function camera(dt) {
-    if (camFree) { camY = scrollY; camV = 0; camX = scrollX; camXV = 0; return; }
+    if (camFree) { camY = scrollY; camV = 0; camX = viewX(); camXV = 0; return; }
     [camY, camV] = damp(camY, camV, camTargetY(), Math.abs(p.vy) > 700 ? 0.22 : 0.5, dt);
     [camX, camXV] = damp(camX, camXV, camTargetX(), 0.35, dt);
-    if (Math.abs(camY - scrollY) > 0.5 || Math.abs(camX - scrollX) > 0.5) scrollTo(camX, camY);
+    if (Math.abs(camY - scrollY) > 0.5 || Math.abs(camX - viewX()) > 0.5) setView(camX, camY);
   }
 
   let lastW = 0, lastH = 0;
@@ -1529,7 +1515,6 @@
         acc += dt;
         if (modalOpen) { acc = 0; now += dt; }        // paused while the link dialog is open
         while (acc >= DT) { step(); checkSecrets(); now += DT; acc -= DT; }
-        updateBlueCloud(dt);
         camera(dt);
         draw(); drawSecretHints(); drawWipe(); updateChordBox();
       } else now += dt;
@@ -1562,8 +1547,8 @@
     closePanel();
     readWorld(); buildScenery();
     chordOpen = null; chordBox.hidden = true;
-    if (!gameOn) scrollTo(0, scrollY);
-    else { spawn(); startGame(); camY = scrollY; camV = 0; camX = scrollX; camXV = 0; }
+    if (!gameOn) setView(0, scrollY);
+    else { spawn(); startGame(); camY = scrollY; camV = 0; camX = viewX(); camXV = 0; }
   };
 
   addEventListener('resize', resize);
