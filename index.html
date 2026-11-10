@@ -803,7 +803,7 @@
       $('linkName').textContent = 'Lucas Caldentey — CV';
       $('linkUrl').textContent = dl + ' · PDF';
       yesBtn.setAttribute('download', dl); yesBtn.removeAttribute('target');
-      yesBtn.firstChild.textContent = 'DOWNLOAD ⬇ ';
+      yesBtn.firstChild.textContent = 'DOWNLOAD';
     } else {
       let shown = el.href;
       try { const u = new URL(el.href, location.href); shown = (u.protocol === 'mailto:' ? 'Email ' + el.href.slice(7) : u.host + u.pathname.replace(/\/$/, '')); } catch (e) {}
@@ -811,7 +811,7 @@
       $('linkName').textContent = title;
       $('linkUrl').textContent = shown;
       yesBtn.removeAttribute('download'); yesBtn.setAttribute('target', '_blank');
-      yesBtn.firstChild.textContent = el.href.startsWith('mailto:') ? 'WRITE ✉ ' : 'YES ↗ ';
+      yesBtn.firstChild.textContent = el.href.startsWith('mailto:') ? 'WRITE' : 'YES';
     }
     modal.hidden = false; modalOpen = true;
     for (const k in keys) keys[k] = 0;
