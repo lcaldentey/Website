@@ -140,6 +140,14 @@
   .camino .stage,.camino h2{color:#ffe08a}
   .camino .block{border-color:#ffe08a}
   section.in-room > .camino{display:none}
+  .camino-photos{display:flex;gap:2vw;margin:0 0 30px;max-width:1100px}
+  .camino-photos figure{flex:1 1 0;min-width:0;margin:0;background:#000;border:var(--px) solid #ffe08a;box-shadow:var(--px) var(--px) 0 #000}
+  .camino-photos img{display:block;width:100%;height:clamp(90px,16vw,190px);object-fit:cover}
+  .camino-photos figcaption{font-family:'Press Start 2P',monospace;font-size:8px;color:#ffe08a;padding:6px 8px;background:rgba(6,8,22,.85)}
+  .panel svg.map{display:block;width:100%;height:auto;border:var(--px) solid #000;margin:4px 0 10px}
+  svg.map text{font-family:'Press Start 2P',monospace;paint-order:stroke;stroke:#000;stroke-width:3px}
+  svg.map .town{font-size:11px;fill:#ffcd75} svg.map .sea{font-size:9px;fill:#8fb3e8;stroke:none;letter-spacing:2px} svg.map .km{font-size:9px;fill:#f4f4f4}
+  .map-note{font-size:18px;margin:0}
   body.classic .camino{position:static;width:auto;margin:30px 0 0}
   body.classic .camino .row{margin:0 0 26px}
   .stage-num.sub{color:#a7f070}
@@ -467,13 +475,16 @@
     <div class="camino" id="camino">
       <div class="stage">SECRET · STAGE 3-0</div>
       <h2>EL CAMINO DE SANTIAGO</h2>
+      <div class="camino-photos">
+        <figure><img src="images/camino-2021.jpg" alt="Arriving in Santiago de Compostela under an arch of hiking poles, 2021" width="730" height="527"><figcaption>SANTIAGO · 2021</figcaption></figure>
+        <figure><img src="images/camino-valley.jpg" alt="River valley along the Camino Primitivo" width="900" height="675"><figcaption>ON THE PRIMITIVO</figcaption></figure>
+        <figure><img src="images/camino-cathedral.jpg" alt="The cathedral of Santiago de Compostela at night" width="800" height="743"><figcaption>THE CATHEDRAL</figcaption></figure>
+      </div>
       <div class="row">
-      <div class="block expand" data-solid style="flex-basis:360px"><span class="icon">＋</span><h3>EL CAMINO DE SANTIAGO</h3><p>A pilgrimage</p>
+      <div class="block expand" data-solid style="flex-basis:360px"><span class="icon">＋</span><h3>EL CAMINO DE SANTIAGO</h3><p>July 2021 · May 2024</p>
         <div class="more">The Camino de Santiago is a centuries-old network of pilgrimage routes that end at the cathedral of Santiago de Compostela, in Galicia, Spain. I've completed "El Camino Primitivo" or the "Primitive/Origional" path from Oviedo to Santiago twice. I truly loved the experience, and managed to connect with both myself and those around me in a deep and profound manner throughout the hike.</div></div>
-      <div class="block expand" data-solid><span class="icon">＋</span><span class="when">[YEAR]</span><h3>FIRST CAMINO</h3><p>[Route · distance]</p>
-        <div class="more">Oviedo - Santiago</div></div>
-      <div class="block expand" data-solid><span class="icon">＋</span><span class="when">[2021]</span><h3>SECOND CAMINO</h3><p>[Route · distance]</p>
-        <div class="more">_ _ _</div></div>
+      <div class="block expand" data-solid style="flex-basis:360px"><span class="icon">＋</span><h3>ROUTE</h3><p>Camino Primitivo · Oviedo <span class="arr">→</span> Santiago</p>
+        <div class="more"><svg class="map" viewBox="0 0 640 256" role="img" aria-label="Map of the Camino Primitivo from Oviedo to Santiago de Compostela" shape-rendering="crispEdges"><rect width="640" height="256" fill="#203a6b"/><polygon fill="#38593a" stroke="#a7f070" stroke-width="2" stroke-linejoin="bevel" points="640,70 606,70 574,58 563,63 525,65 461,70 432,67 379,70 327,43 272,18 241,27 213,45 184,83 156,108 123,119 89,121 57,144 28,160 13,205 13,220 41,243 57,256 57,256 640,256"/><text x="626" y="30" text-anchor="end" class="sea">MAR CANTABRICO</text><text x="14" y="30" class="sea">ATLANTICO</text><polyline fill="none" stroke="#000" stroke-width="7" stroke-dasharray="10 6" points="577,114 540,108 509,103 484,120 452,135 408,147 376,167 358,186 296,193 269,200 221,215 197,212 164,217 134,222"/><polyline fill="none" stroke="#ffcd75" stroke-width="5" stroke-dasharray="10 6" points="575,112 538,106 507,101 482,118 450,133 406,145 374,165 356,184 294,191 267,198 219,213 195,210 162,215 132,220"/><rect x="570" y="107" width="10" height="10" fill="#ffcd75" stroke="#000" stroke-width="2"/><rect x="535" y="103" width="6" height="6" fill="#f4f4f4" stroke="#000" stroke-width="2"/><rect x="504" y="98" width="6" height="6" fill="#f4f4f4" stroke="#000" stroke-width="2"/><rect x="479" y="115" width="6" height="6" fill="#f4f4f4" stroke="#000" stroke-width="2"/><rect x="447" y="130" width="6" height="6" fill="#f4f4f4" stroke="#000" stroke-width="2"/><rect x="403" y="142" width="6" height="6" fill="#f4f4f4" stroke="#000" stroke-width="2"/><rect x="371" y="162" width="6" height="6" fill="#f4f4f4" stroke="#000" stroke-width="2"/><rect x="353" y="181" width="6" height="6" fill="#f4f4f4" stroke="#000" stroke-width="2"/><rect x="289" y="186" width="10" height="10" fill="#ffcd75" stroke="#000" stroke-width="2"/><rect x="264" y="195" width="6" height="6" fill="#f4f4f4" stroke="#000" stroke-width="2"/><rect x="216" y="210" width="6" height="6" fill="#f4f4f4" stroke="#000" stroke-width="2"/><rect x="192" y="207" width="6" height="6" fill="#f4f4f4" stroke="#000" stroke-width="2"/><rect x="159" y="212" width="6" height="6" fill="#f4f4f4" stroke="#000" stroke-width="2"/><rect x="127" y="215" width="10" height="10" fill="#ffcd75" stroke="#000" stroke-width="2"/><text x="575" y="98" text-anchor="middle" class="town">OVIEDO</text><text x="294" y="213" text-anchor="middle" class="town">LUGO</text><text x="132" y="242" text-anchor="middle" class="town">SANTIAGO</text><text x="628" y="242" text-anchor="end" class="km">320 KM · 13 STAGES</text></svg><p class="map-note">The Primitivo, the oldest Camino: from Oviedo over the Asturian mountains, through Lugo, joining the Camino Francés at Melide and ending in Santiago de Compostela.</p></div></div>
       </div>
     </div>
     <div class="string" data-chord="Fmaj9" data-note="The IV chord."></div>
