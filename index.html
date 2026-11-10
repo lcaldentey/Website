@@ -702,7 +702,32 @@
     const r = el.getBoundingClientRect(), vx = viewX();
     return { l: r.left + vx, t: r.top + scrollY, r: r.right + vx, b: r.bottom + scrollY };
   };
+  // Equal spacing: every section (after the first) is padded to the height of the tallest one, so
+  // the strings sit the same distance apart and strumming down through them keeps a steady rhythm.
+  // The extra space goes under the section heading. Open info panels don't count, and a section
+  // inside a sub-room keeps the target from its main view, so nothing above the player moves.
+  function equalizeSections() {
+    const secs = [...document.querySelectorAll('main > section')].slice(1);
+    const info = secs.map(sec => {
+      const h2 = sec.querySelector(':scope > h2');
+      const extra = h2 ? +(h2.dataset.extra || 0) : 0;
+      let h = sec.offsetHeight - extra;
+      sec.querySelectorAll(':scope > .panel-slot.show').forEach(sl => h -= sl.offsetHeight + parseFloat(getComputedStyle(sl).marginBottom || 0));
+      if (!sec.classList.contains('in-room')) sec.dataset.mainH = h;
+      return { h2, h, extra, main: +(sec.dataset.mainH || h) };
+    });
+    const target = gameOn ? Math.max(...info.map(i => i.main)) : 0;
+    for (const i of info) {
+      if (!i.h2) continue;
+      const e = gameOn ? Math.max(0, Math.round(target - i.h)) : 0;
+      if (e === i.extra) continue;
+      i.h2.dataset.extra = e;
+      i.h2.style.marginBottom = '';
+      if (e) i.h2.style.marginBottom = (parseFloat(getComputedStyle(i.h2).marginBottom) + e) + 'px';
+    }
+  }
   function readWorld() {
+    equalizeSections();
     const W = VW();
     solids = [...document.querySelectorAll('[data-solid]')]
       .map(el => ({ el, floor: el.hasAttribute('data-floor'), ...pageRect(el) }))
