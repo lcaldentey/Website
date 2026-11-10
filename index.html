@@ -8,6 +8,8 @@
 <meta property="og:title" content="Lucas Caldentey">
 <meta property="og:description" content="Chemical Engineering at Columbia University — fall from orbit down to my house.">
 <link rel="icon" href="favicon.svg?v=2" type="image/svg+xml">
+<!-- visitor stats: https://lcaldentey.goatcounter.com (no cookies) -->
+<script data-goatcounter="https://lcaldentey.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 <link rel="icon" href="favicon.png?v=2" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -576,6 +578,15 @@
 
 <script>
 (() => {
+  // ================= STATS =================
+  // Counts what visitors do (songs played, secrets found, links opened…) as GoatCounter events.
+  // `once` events count at most one time per page visit.
+  const tracked = new Set();
+  function track(name, once) {
+    if (once) { if (tracked.has(name)) return; tracked.add(name); }
+    try { if (window.goatcounter && window.goatcounter.count) window.goatcounter.count({ path: name, title: name, event: true }); } catch (e) {}
+  }
+
   // ================= CONFIG =================
   const SCALE = 3;
   const G = 1900, RUN = 330, JUMP = -640, MAXFALL = 1500, DIVE = 1.6;
@@ -793,7 +804,7 @@
     for (const k in keys) keys[k] = 0;
   }
   function closeLinkModal() { modal.hidden = true; modalOpen = false; }
-  yesBtn.addEventListener('click', () => setTimeout(closeLinkModal, 0));
+  yesBtn.addEventListener('click', () => { track('link: ' + ($('linkName').textContent || yesBtn.getAttribute('href'))); setTimeout(closeLinkModal, 0); });
   document.querySelectorAll('a.block.link').forEach(a => a.addEventListener('click', e => { e.preventDefault(); openLinkModal(a); }));
   $('linkNo').addEventListener('click', closeLinkModal);
   modal.addEventListener('click', e => { if (e.target === modal) closeLinkModal(); });
@@ -808,6 +819,7 @@
     if (!a.paused) { a.pause(); return; }
     if (currentTrack && currentTrack !== el) currentTrack._audio.pause();
     currentTrack = el;
+    if (a.currentTime < 1) track('song: ' + ((el.querySelector('h3') || {}).textContent || el.dataset.src));
     a.play().catch(() => { el.classList.remove('playing'); toast('ADD AN AUDIO FILE FOR THIS SONG'); });
   }
   document.querySelectorAll('.track').forEach(el => {
@@ -874,6 +886,7 @@
     const row = el.closest('.row'), slot = slotFor(el), more = el.querySelector('.more');
     if (!slot || !slot.classList.contains('panel-slot') || !more) return;
     const title = (el.querySelector('h3') || {}).textContent || '';
+    track('opened: ' + title, true);
     const long = more.querySelectorAll('li').length > 3;          // lists spread into two columns; paragraphs stay whole
     keepRowInPlace(row, () => {
       slot.innerHTML = `<div class="panel"><h4>${title}</h4><div class="cols${long ? ' multi' : ''}">${more.innerHTML}</div></div>`;
@@ -921,7 +934,7 @@
       playChord({ notes: entering ? [60, 64, 67, 72] : [72, 67, 64, 60], voices: [] }, 0.3, 0, 0.05);
     });
   }
-  const enterRoom = (sec, room) => { if (sec && room) swapRoom(sec, room, true); };
+  const enterRoom = (sec, room) => { if (sec && room) { track('room: ' + (room.dataset.title || room.id), true); swapRoom(sec, room, true); } };
   const exitRoom = sec => { if (sec) swapRoom(sec, null, false); };
 
   // ================= INPUT =================
@@ -1269,7 +1282,7 @@
     if (inBasement(feet)) {
       if (!caveOpen && coins >= cost) openCave();
       if (caveOpen && pcx > thanks.l + 80 && !thanksSeen) {
-        thanksSeen = true;
+        thanksSeen = true; track('reached the end', true);
         $('thanksCoins').textContent = `You found ${coins} of ${total} coins.`;
         playChord({ notes: CHORDS.Cadd9.concat([76, 79, 84]), voices: [] }, 0.6, 0.6, 0.04);
       }
@@ -1522,7 +1535,7 @@
   const foundSecrets = new Set();
   function secretToast(el) {
     if (foundSecrets.has(el.id)) return;
-    foundSecrets.add(el.id); toast('★ SECRET FOUND! ★');
+    foundSecrets.add(el.id); toast('★ SECRET FOUND! ★'); track('secret: ' + el.id, true);
     playChord({ notes: [72, 76, 79, 84], voices: [] }, 0.35, 0.8, 0.07);
   }
   const inCamino = () => camino && p.x + p.w / 2 < 0 && zoneIndex(p.y + p.h) === camino.k && !inBasement(p.y + p.h);
@@ -1617,6 +1630,7 @@
   soundBtn.onclick = () => { unlockAudio(); soundOn = !soundOn; soundBtn.textContent = soundOn ? '♪ ON' : '♪ OFF'; soundBtn.blur(); };
   modeBtn.onclick = () => {
     gameOn = !gameOn; document.body.classList.toggle('classic', !gameOn);
+    if (!gameOn) track('switched to classic mode', true);
     modeBtn.textContent = gameOn ? 'CLASSIC MODE' : 'GAME MODE'; modeBtn.blur();
     for (const k in keys) keys[k] = 0;
     document.querySelectorAll('section.in-room').forEach(sec => {
