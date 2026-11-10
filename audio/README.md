@@ -5,7 +5,9 @@ Songs for the Music Production room. `.m4a` (AAC) or `.mp3` both work; keep each
 Current boxes in `index.html` (search for `class="block track"`):
 
 - `Limon.m4a` — LIMÓN
-- `song-2.mp3` — placeholder
-- `song-3.mp3` — placeholder
+- `Welcome.m4a` — WELCOME
+- `Rebel-in-the-Sands.m4a` — REBEL IN THE SANDS
+- `English.m4a` — ENGLISH
 
-To add a song, drop the file here and set `data-src="audio/…"` and the title on a song box.
+Each box shows its composition date in `<p class="when">…</p>`.
+To add a song, drop the file here and copy a song box, changing `data-src`, the title and the date.

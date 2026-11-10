@@ -71,6 +71,10 @@
   /* Row of boxes hanging at jump height above the string */
   .row{display:flex;gap:4vw;align-items:flex-end;margin:0 0 100px}
   .row > .block{flex:0 1 300px;min-width:0}
+  #room-music{gap:2vw}
+  .block.track p.when{font-size:10px;margin:0;color:var(--dim)}
+  @media (max-width:700px){ #room-music{gap:8px} #room-music .block{padding:10px 8px} #room-music .block.back{flex-basis:64px !important}
+    #room-music h3{font-size:8px;overflow-wrap:anywhere} #room-music .icon{float:none;display:block;margin:0 0 4px} #room-music p.when{font-size:7px} }
 
   .block{position:relative;display:block;color:var(--ink);text-decoration:none;background:var(--block);
     border:var(--px) solid var(--edge);padding:14px 18px;box-shadow:var(--px) var(--px) 0 #000}
@@ -512,10 +516,10 @@
     </div>
     <div class="row room" id="room-music" data-title="MUSIC PRODUCTION" data-stage="5-2">
       <div class="block back nocoin" data-solid data-back><span class="icon">←</span><h3>BACK</h3></div>
-      <div class="block track" data-solid data-src="audio/Limon.m4a"><span class="icon">♪</span><h3>LIMÓN</h3><p>Original song</p><div class="prog"><i></i></div></div>
-      <div class="block track" data-solid data-src="audio/song-2.mp3"><span class="icon">♪</span><h3>[SONG TITLE]</h3><p>[year · genre]</p><div class="prog"><i></i></div></div>
-      <div class="block track" data-solid data-src="audio/song-3.mp3"><span class="icon">♪</span><h3>[SONG TITLE]</h3><p>[year · genre]</p><div class="prog"><i></i></div></div>
-      <a class="block link" data-solid href="#" target="_blank" rel="noopener"><span class="icon">↗</span><h3>MORE MUSIC</h3><p>[SoundCloud / Spotify]</p></a>
+      <div class="block track" data-solid data-src="audio/Limon.m4a"><span class="icon">♪</span><h3>LIMÓN</h3><p class="when">[date]</p><div class="prog"><i></i></div></div>
+      <div class="block track" data-solid data-src="audio/Welcome.m4a"><span class="icon">♪</span><h3>WELCOME</h3><p class="when">[date]</p><div class="prog"><i></i></div></div>
+      <div class="block track" data-solid data-src="audio/Rebel-in-the-Sands.m4a"><span class="icon">♪</span><h3>REBEL IN THE SANDS</h3><p class="when">[date]</p><div class="prog"><i></i></div></div>
+      <div class="block track" data-solid data-src="audio/English.m4a"><span class="icon">♪</span><h3>ENGLISH</h3><p class="when">[date]</p><div class="prog"><i></i></div></div>
     </div>
     <div class="string" data-chord="Cadd9" data-note="Home again (I), resolving the I–vi–IV–V–I."></div>
   </section>
@@ -766,7 +770,8 @@
 
   // ================= LINKS & SONGS =================
   let currentTrack = null;
-  function setDuck(on) { if (out) out.gain.setTargetAtTime(on ? 0.25 : 0.9, ac.currentTime, 0.2); }
+  // while a song plays the strings (and every other game sound) go silent, then fade back in
+  function setDuck(on) { if (out) out.gain.setTargetAtTime(on ? 0 : 0.9, ac.currentTime, on ? 0.08 : 0.4); }
   function toggleTrack(el) {
     unlockAudio();
     const a = el._audio;
