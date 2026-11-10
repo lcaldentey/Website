@@ -2,14 +2,16 @@
 
 Songs for the Music Production room. `.m4a` (AAC) or `.mp3` both work; keep each under ~10 MB so the page stays fast.
 
-Current boxes in `index.html` (search for `class="block track"`):
+The room is two rows of three (search for `id="room-music"` in `index.html`). Top row, left to right:
 
-- `Jazz_it_Up_Shawty.m4a` — JAZZ IT UP SHAWTY (left column, top)
-- `Whispering_Plead.m4a` — WHISPERING PLEAD (left column, middle)
-- `Limon.m4a` — LIMÓN (left column, bottom)
-- `English.m4a` — ENGLISH (right column, top)
-- `Rebel-in-the-Sands.m4a` — REBEL IN THE SANDS (right column, middle)
-- `Welcome.m4a` — WELCOME (right column, bottom)
+- `Rebel-in-the-Sands.m4a` — RITS · Jan 18, 2021
+- `Welcome.m4a` — WELCOME · Mar 20, 2022
+- `English.m4a` — ENGLISH · Jun 5, 2023
 
-Each box shows its composition date in `<p class="when">…</p>`.
-To add a song, drop the file here and copy a song box, changing `data-src`, the title and the date.
+Bottom row, left to right:
+
+- `Jazz_it_Up_Shawty.m4a` — ATRAS · Oct 7, 2024
+- `Whispering_Plead.m4a` — WHISPERING PLEAD · Feb 13, 2025
+- `Limon.m4a` — LIMÓN · Sep 15, 2026
+
+Each box shows its date in `<p class="when">…</p>`.
