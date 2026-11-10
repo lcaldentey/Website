@@ -1,12 +1,11 @@
 # audio/
 
-Put your songs here as `.mp3` files (keep each under ~10 MB so the page stays fast).
+Songs for the Music Production room. `.m4a` (AAC) or `.mp3` both work; keep each under ~10 MB so the page stays fast.
 
-The page expects these names by default:
+Current boxes in `index.html` (search for `class="block track"`):
 
-- `song-1.mp3`
-- `song-2.mp3`
-- `song-3.mp3`
+- `Limon.m4a` — LIMÓN
+- `song-2.mp3` — placeholder
+- `song-3.mp3` — placeholder
 
-To use other names, change `data-src="audio/…"` on each song box in `index.html`
-(search for `class="block track"`).
+To add a song, drop the file here and set `data-src="audio/…"` and the title on a song box.

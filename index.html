@@ -512,7 +512,7 @@
     </div>
     <div class="row room" id="room-music" data-title="MUSIC PRODUCTION" data-stage="5-2">
       <div class="block back nocoin" data-solid data-back><span class="icon">←</span><h3>BACK</h3></div>
-      <div class="block track" data-solid data-src="audio/song-1.mp3"><span class="icon">♪</span><h3>[SONG TITLE]</h3><p>[year · genre]</p><div class="prog"><i></i></div></div>
+      <div class="block track" data-solid data-src="audio/Limon.m4a"><span class="icon">♪</span><h3>LIMÓN</h3><p>Original song</p><div class="prog"><i></i></div></div>
       <div class="block track" data-solid data-src="audio/song-2.mp3"><span class="icon">♪</span><h3>[SONG TITLE]</h3><p>[year · genre]</p><div class="prog"><i></i></div></div>
       <div class="block track" data-solid data-src="audio/song-3.mp3"><span class="icon">♪</span><h3>[SONG TITLE]</h3><p>[year · genre]</p><div class="prog"><i></i></div></div>
       <a class="block link" data-solid href="#" target="_blank" rel="noopener"><span class="icon">↗</span><h3>MORE MUSIC</h3><p>[SoundCloud / Spotify]</p></a>
@@ -717,7 +717,7 @@
     coins++; coinN.textContent = coins;
     coinsEl.classList.remove('pop'); void coinsEl.offsetWidth; coinsEl.classList.add('pop');
     pops.push({ x, y, t0: now });
-    playChord({ notes: [84, 91], voices: [] }, 0.3, 0, 0.06);
+    playChord({ notes: [84, 91], voices: [] }, 0.1, 0, 0.06, 0.6);   // kept soft so collecting isn't grating
   }
   const toastEl = $('toast'); let toastTimer;
   function toast(msg) {
@@ -907,7 +907,10 @@
       return;
     }
     if (!gameOn) return;
-    unlockAudio(); startGame();
+    unlockAudio();
+    // The key that starts the game only starts it: it isn't held down for the fall,
+    // so ↓ / S can't dive the player straight through the first string.
+    if (waiting) { e.preventDefault(); startGame(); return; }
     if (e.code === 'KeyR') { spawn(); return; }
     if (e.code === 'KeyE' || e.code === 'Enter') { e.preventDefault(); activate(active); return; }
     if (e.code === 'KeyU' || e.code === 'PageUp') { e.preventDefault(); warpUp(); return; }
@@ -930,6 +933,7 @@
     const k = b.dataset.k;
     b.addEventListener('pointerdown', e => {
       e.preventDefault(); unlockAudio(); camFree = false;
+      if (waiting) { startGame(); return; }        // the first tap only starts the game
       if (k === 'act') { activate(active); return; }
       if (k === 'jump' && upTap()) return;
       keys[k] = 1;
@@ -1032,7 +1036,7 @@
       return buf;
     }));
   }
-  function playChord(s, vel, pan, gapOverride) {
+  function playChord(s, vel, pan, gapOverride, gainMul = 1) {
     if (!ac || !soundOn) return;
     const t0 = ac.currentTime + 0.01;
     for (const v of s.voices) { try { v.g.gain.setTargetAtTime(0, t0, 0.15); v.src.stop(t0 + 1.2); } catch (e) {} }
@@ -1041,7 +1045,7 @@
     if (ac.createStereoPanner) { const sp = ac.createStereoPanner(); sp.pan.value = pan * 0.6; tone.connect(sp); sp.connect(out); }
     else tone.connect(out);
     const gap = gapOverride != null ? gapOverride : 0.012 + 0.03 * (1 - vel);
-    const base = (0.12 + 0.38 * vel) / Math.sqrt(s.notes.length);
+    const base = gainMul * (0.12 + 0.38 * vel) / Math.sqrt(s.notes.length);
     s.notes.forEach((m, i) => {
       renderPiano(m).then(buf => {
         const src = ac.createBufferSource(); src.buffer = buf;
